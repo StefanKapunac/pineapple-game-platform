@@ -13,6 +13,7 @@ using Identity.Services;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
+using Identity.Data.DTO;
 
 namespace Identity.Controllers
 {
@@ -58,10 +59,10 @@ namespace Identity.Controllers
         [SwaggerOperation("register")]
         [SwaggerResponse((int)HttpStatusCode.OK)]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Register([FromBody] Data.IdentityUser iu)
+        public async Task<IActionResult> Register([FromBody] IdentityUserDTO iu)
         {
-            var user = new Data.IdentityUser { UserName = iu.UserName, Email = iu.Email };
-            var result = await _userManager.CreateAsync(user, iu.PasswordHash);
+            var user = new Data.IdentityUser { UserName = iu.Username, Email = iu.Email, EmailConfirmed = true };
+            var result = await _userManager.CreateAsync(user, iu.Password);
 
             if (ModelState.IsValid)
             {
