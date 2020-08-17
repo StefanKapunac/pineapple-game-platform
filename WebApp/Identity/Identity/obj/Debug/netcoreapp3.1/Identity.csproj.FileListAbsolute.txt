@@ -176,3 +176,6 @@ C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\bin\Deb
 C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\obj\Debug\netcoreapp3.1\Identity.csproj.CoreCompileInputs.cache
 C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\obj\Debug\netcoreapp3.1\Identity.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\obj\Debug\netcoreapp3.1\Identity.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+C:\Users\marija\Desktop\pineapple-game-platform\WebApp\Identity\Identity\bin\Debug\netcoreapp3.1\Swashbuckle.Core.dll
