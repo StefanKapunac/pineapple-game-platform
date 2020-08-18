@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marija\\Desktop\\pineapple-game-platform\\WebApp\\Identity\\Identity\\Identity.csproj": {}
+    "C:\\Users\\marija\\source\\repos\\Identity\\Identity\\Identity.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marija\\Desktop\\pineapple-game-platform\\WebApp\\Identity\\Identity\\Identity.csproj": {
+    "C:\\Users\\marija\\source\\repos\\Identity\\Identity\\Identity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marija\\Desktop\\pineapple-game-platform\\WebApp\\Identity\\Identity\\Identity.csproj",
+        "projectUniqueName": "C:\\Users\\marija\\source\\repos\\Identity\\Identity\\Identity.csproj",
         "projectName": "Identity",
-        "projectPath": "C:\\Users\\marija\\Desktop\\pineapple-game-platform\\WebApp\\Identity\\Identity\\Identity.csproj",
+        "projectPath": "C:\\Users\\marija\\source\\repos\\Identity\\Identity\\Identity.csproj",
         "packagesPath": "C:\\Users\\marija\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marija\\Desktop\\pineapple-game-platform\\WebApp\\Identity\\Identity\\obj\\",
+        "outputPath": "C:\\Users\\marija\\source\\repos\\Identity\\Identity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\marija\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.AspNet.Identity.EntityFramework": {
+              "target": "Package",
+              "version": "[2.2.3, )"
+            },
+            "Microsoft.AspNetCore.Components": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.7, )"
@@ -50,17 +58,15 @@
               "target": "Package",
               "version": "[3.1.7, )"
             },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.1.7, )"
-            },
-            "Microsoft.EntityFrameworkCore.InMemory": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.7, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[3.1.7, )"
             },
@@ -76,13 +82,21 @@
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
-              "version": "[1.10.8, )"
+              "version": "[1.10.9, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.4, )"
             },
             "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[5.5.1, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
               "version": "[5.5.1, )"
             },

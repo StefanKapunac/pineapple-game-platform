@@ -1,4 +1,5 @@
-﻿using Identity.Data;
+﻿using Identity.Exceptions;
+using Identity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,28 +10,20 @@ namespace Identity.Services
     public class UserService : IUserService
     {
         private IdentityContext _context;
-        public IdentityUser Authenticate(string username, string password)
+
+        public UserService(IdentityContext context)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return null;
-
-            var user = _context.Users.SingleOrDefault(x => x.UserName == username);
-
-            // check if username exists
-            if (user == null)
-                return null;
-
-            // check if password is correct
-            //if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-               // return null;
-
-            // authentication successful
-            return user;
+            _context = context;
         }
-
-        public IdentityUser Create(IdentityUser user, string password)
+        public IdentityUser Create(IdentityUser user)
         {
-            throw new NotImplementedException();
+            if (_context.Users.Any(x => x.UserName == user.UserName))
+                throw new AppException("Username \"" + user.UserName + "\" is already taken");
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return user;
         }
 
         public void Delete(int id)

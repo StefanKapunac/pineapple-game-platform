@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Identity.Models;
+using Identity.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Identity.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,9 +27,16 @@ namespace Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IdentityContext>(opt =>
-                opt.UseInMemoryDatabase("IdentityList"));
+            /*services.AddDbContext<IdentityContext>(
+                options => options.UseSqlite("Data Source=blog.db"));*/
+            /*services.AddIdentityCore<Models.IdentityUser>()
+                .AddUserManager<UserManager<Models.IdentityUser>>()
+                .AddSignInManager<SignInManager<Models.IdentityUser>>()
+                .AddEntityFrameworkStores<IdentityContext>();*/
+
             services.AddControllers();
+
+            services.AddTransient<IUserService, UserService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -46,7 +54,7 @@ namespace Identity
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -55,20 +63,19 @@ namespace Identity
 
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //    c.RoutePrefix = string.Empty;
-            //});
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1");
             });
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Identity.Data
+namespace Identity.Models
 {
-    public class IdentityContext : IdentityDbContext<Identity.Data.IdentityUser>
+    public class IdentityContext : IdentityDbContext<Identity.Models.IdentityUser>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)

@@ -1,4 +1,4 @@
-﻿using Identity.Data;
+﻿using Identity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +8,9 @@ namespace Identity.Services
 {
     public interface IUserService
     {
-        IdentityUser Authenticate(string username, string password);
         IEnumerable<IdentityUser> GetAll();
         IdentityUser GetById(int id);
-        IdentityUser Create(IdentityUser user, string password);
+        IdentityUser Create(IdentityUser user);
         void Update(IdentityUser user, string password = null);
         void Delete(int id);
     }

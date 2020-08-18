@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Identity.Models;
+using Microsoft.AspNetCore.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-//using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 [assembly: HostingStartup(typeof(Identity.IdentityHostingStartup))]
 namespace Identity
@@ -22,7 +22,9 @@ namespace Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("WebAppContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<Models.IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddUserManager<UserManager<Models.IdentityUser>>()
+                    .AddSignInManager<SignInManager<Models.IdentityUser>>()
                     .AddEntityFrameworkStores<IdentityContext>();
             });
         }
