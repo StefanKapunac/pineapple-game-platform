@@ -1,4 +1,5 @@
-﻿using ChatApi.Models;
+﻿using Chat.Hubs.Clients;
+using ChatApi.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChatApi.Hubs
 {
-    public class ChatHub : Hub
+    public class ChatHub : Hub<IChatClient>
     {
         // maps username to connection id
         private readonly static Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
@@ -15,7 +16,7 @@ namespace ChatApi.Hubs
 
         public async Task SendMessage(ChatMessage message, string groupName)
         {
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
+            await Clients.Group(groupName).ReceiveMessage(message);
             //await Clients.Others.SendAsync("ReceiveMessage", user, message);
             //await Clients.Caller.SendAsync("MessageSent", message);
         }
@@ -23,7 +24,7 @@ namespace ChatApi.Hubs
         public async Task SendPrivate(string fromUser, string message, string toUser)
         {
             var receiverId = _ConnectionsMap[toUser];
-            await Clients.Client(receiverId).SendAsync("ReceiveMessage", new ChatMessage { User = fromUser, Message = message});
+            await Clients.Client(receiverId).ReceiveMessage(new ChatMessage { User = fromUser, Message = message});
             //await Clients.Client(Context.ConnectionId).SendAsync("MessageSent", message);
         }
 
@@ -34,7 +35,7 @@ namespace ChatApi.Hubs
             AddUser(user);
             //add user to group
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            //await SendMessage(user, " joined!", groupName);
+            await SendMessage(new ChatMessage { User = user, Message = " joined!" }, groupName);
         }
 
         private void AddUser(string username)
