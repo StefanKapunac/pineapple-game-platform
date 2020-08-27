@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  identity:
+    image: ${DOCKER_REGISTRY-}identity
+    environment:
+      - ConnectionString=Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity/Dockerfile
+    depends_on:
+      - mssqldata
+
+  chat:
+    image: ${DOCKER_REGISTRY-}chat
+    build:
+      context: .
+      dockerfile: Services/Chat/Chat/Dockerfile
+
+
+  roomservice:
+    image: ${DOCKER_REGISTRY-}roomservice
+    build:
+      context: .
+      dockerfile: Services/RoomService/RoomService/Dockerfile
+
+
+  mssqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=Pass@word2019
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+    container_name: mssqldata

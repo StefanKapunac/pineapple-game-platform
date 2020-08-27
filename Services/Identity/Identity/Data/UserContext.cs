@@ -20,9 +20,9 @@ namespace Identity.Data
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             // connect to sql server database
-            options.UseSqlServer(Configuration.GetConnectionString("UserContext"));
+            options.UseSqlServer(Configuration["ConnectionString"]);
         }
 
-        public DbSet<Identity.Models.User> User { get; set; }
+        public DbSet<Identity.Models.User> Users { get; set; }
     }
 }

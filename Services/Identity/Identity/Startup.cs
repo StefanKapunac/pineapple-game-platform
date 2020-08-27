@@ -29,8 +29,10 @@ namespace Identity
         {
             services.AddControllers();
 
+            var s = Configuration["ConnectionString"];
+
             services.AddDbContext<UserContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
+                    options.UseSqlServer(Configuration["ConnectionString"]));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
