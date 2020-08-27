@@ -37,5 +37,11 @@ services:
       - mssqlvolume:/var/opt/mssql
 
 
+  game:
+    image: ${DOCKER_REGISTRY-}game
+    build:
+      context: .
+      dockerfile: Services/Game/Dockerfile
+
 volumes:
     mssqlvolume:
