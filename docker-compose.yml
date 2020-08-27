@@ -33,3 +33,9 @@ services:
     ports:
       - "5434:1433"
     container_name: mssqldata
+    volumes:
+      - mssqlvolume:/var/opt/mssql
+
+
+volumes:
+    mssqlvolume:
