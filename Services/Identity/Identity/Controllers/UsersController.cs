@@ -89,7 +89,8 @@ namespace Identity.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return user;
         }
 
         // POST: api/Users/login

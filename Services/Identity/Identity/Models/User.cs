@@ -9,6 +9,7 @@ namespace Identity.Models
     public class User
     {
         [Required]
+        [Key]
         [Display(Name = "Id")]
         public int Id { get; set; }
 

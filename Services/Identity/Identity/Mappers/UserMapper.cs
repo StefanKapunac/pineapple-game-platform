@@ -11,8 +11,7 @@ namespace Identity.Mappers
     { 
         public User toEntity(UserDTO userDTO)
         {
-            return new User { Id = userDTO.Id, Username = userDTO.Username, Password = CreatePasswordHash(userDTO.Password)};
-            //return new User { Id = userDTO.Id, Username = userDTO.Username, Password = ShiftPassword(userDTO.Password) };
+            return new User { /*Id = userDTO.Id, */Username = userDTO.Username, Password = CreatePasswordHash(userDTO.Password)};
         }
 
         private static string CreatePasswordHash(string password)
@@ -25,11 +24,6 @@ namespace Identity.Mappers
                 var passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(passwordHash);
             }
-        }
-
-        private static string ShiftPassword(string password)
-        {
-            return password.Substring(1, password.Length - 1) + password.Substring(0, 1);
         }
     }
 }
