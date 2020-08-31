@@ -7,6 +7,6 @@ namespace Identity.Mappers
 {
     public interface IMapper<E, D>
     {
-        public E toEntity(D dto);
+        public E ToEntity(D dto);
     }
 }

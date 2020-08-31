@@ -21,5 +21,9 @@ namespace Identity.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Required]
+        [Display(Name = "PasswordKey")]
+        public string PasswordKey { get; set; }
     }
 }

@@ -15,6 +15,9 @@ using Identity.Data;
 using Identity.Mappers;
 using Identity.Models;
 using Identity.Models.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Identity
 {
@@ -36,7 +39,27 @@ namespace Identity
 
             services.AddDbContext<UserContext>(options =>
                     options.UseSqlServer(Configuration["ConnectionString"]));
-                    //options.UseSqlServer("Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019"));
+            //options.UseSqlServer("Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019"));
+
+            // configure jwt authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+
+            });
 
             services.AddTransient<IMapper<User, UserDTO>, UserMapper>();
 

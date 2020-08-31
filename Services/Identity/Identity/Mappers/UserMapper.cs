@@ -9,12 +9,13 @@ namespace Identity.Mappers
 {
     public class UserMapper : IMapper<User, UserDTO>
     { 
-        public User toEntity(UserDTO userDTO)
+        public User ToEntity(UserDTO userDTO)
         {
-            return new User { /*Id = userDTO.Id, */Username = userDTO.Username, Password = CreatePasswordHash(userDTO.Password)};
+            var hashed = CreatePasswordHash(userDTO.Password);
+            return new User { /*Id = userDTO.Id, */Username = userDTO.Username, Password = hashed.Item1, PasswordKey = hashed.Item2};
         }
 
-        private static string CreatePasswordHash(string password)
+        private static Tuple<string, string> CreatePasswordHash(string password)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
@@ -22,7 +23,8 @@ namespace Identity.Mappers
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 var passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(passwordHash);
+                var passwordKey = hmac.Key;
+               return new Tuple<string, string>(Convert.ToBase64String(passwordHash), Convert.ToBase64String(passwordKey));
             }
         }
     }
