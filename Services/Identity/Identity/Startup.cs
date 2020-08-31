@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Identity.Data;
+using Identity.Mappers;
+using Identity.Models;
+using Identity.Models.DTO;
 
 namespace Identity
 {
@@ -29,10 +32,13 @@ namespace Identity
         {
             services.AddControllers();
 
-            var s = Configuration["ConnectionString"];
+            //var s = Configuration["ConnectionString"];
 
             services.AddDbContext<UserContext>(options =>
                     options.UseSqlServer(Configuration["ConnectionString"]));
+                    //options.UseSqlServer("Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019"));
+
+            services.AddTransient<IMapper<User, UserDTO>, UserMapper>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
@@ -60,6 +66,7 @@ namespace Identity
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

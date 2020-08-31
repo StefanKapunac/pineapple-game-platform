@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Identity.Data;
 using Identity.Models;
+using Microsoft.AspNetCore.Authorization;
+using Identity.Mappers;
+using Identity.Models.DTO;
 
 namespace Identity.Controllers
 {
@@ -15,10 +18,12 @@ namespace Identity.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserContext _context;
+        private IMapper<User, UserDTO> _mapper;
 
-        public UsersController(UserContext context)
+        public UsersController(UserContext context, IMapper<User, UserDTO> mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Users
@@ -74,16 +79,52 @@ namespace Identity.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Users/register
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> RegisterUser(UserDTO userDTO)
         {
+            var user = _mapper.toEntity(userDTO);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        // POST: api/Users/login
+        [HttpPost("login")]
+        public Task<ActionResult<User>> LoginUser([FromBody] User user)
+        {
+            //var user = _userService.Authenticate(model.Username, model.Password);
+
+            //if (user == null)
+            //    return BadRequest(new { message = "Username or password is incorrect" });
+
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(new Claim[]
+            //    {
+            //        new Claim(ClaimTypes.Name, user.Id.ToString())
+            //    }),
+            //    Expires = DateTime.UtcNow.AddDays(7),
+            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //};
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+            //var tokenString = tokenHandler.WriteToken(token);
+
+            //// return basic user info and authentication token
+            //return Ok(new
+            //{
+            //    Id = user.Id,
+            //    Username = user.Username,
+            //    FirstName = user.FirstName,
+            //    LastName = user.LastName,
+            //    Token = tokenString
+            //});
+            return null;
         }
 
         // DELETE: api/Users/5

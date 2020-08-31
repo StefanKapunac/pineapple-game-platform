@@ -21,6 +21,7 @@ namespace Identity.Data
         {
             // connect to sql server database
             options.UseSqlServer(Configuration["ConnectionString"]);
+            //options.UseSqlServer("Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019");
         }
 
         public DbSet<Identity.Models.User> Users { get; set; }
