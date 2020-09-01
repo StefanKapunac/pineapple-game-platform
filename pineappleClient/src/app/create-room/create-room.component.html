@@ -1,0 +1,27 @@
+<div class="dialog">
+    <h1 mat-dialog-title>
+        Create New Room
+    </h1>
+    <div mat-dialog-content>
+        <form>
+          <mat-form-field color="accent" class="dialog__input">
+            <mat-label>Choose game</mat-label>
+            <input
+              matInput
+              placeholder="Game name"
+              [(ngModel)]="createRoomData.game"
+              name="game"
+            />
+          </mat-form-field>
+          <br/>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button
+        mat-raised-button
+        color="accent"
+        class="dialog__button"
+        [mat-dialog-close]="createRoomData"
+        >Create Room</button>
+    </div>
+</div>

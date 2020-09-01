@@ -9,13 +9,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { CreateRoomComponent } from './create-room/create-room.component';
+import { JoinRoomComponent } from './join-room/join-room.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    CreateRoomComponent,
+    JoinRoomComponent
   ],
   imports: [
     BrowserModule,
