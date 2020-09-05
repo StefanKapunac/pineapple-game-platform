@@ -14,9 +14,6 @@ import { AuthService } from '../services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   @ViewChild('notSignedInDialog') notSignedInDialog: TemplateRef<any>;
-  
-  isUserSignedIn = false;
-  username = '';
 
   constructor(public dialog: MatDialog,
               public authService: AuthService) { }
@@ -27,8 +24,8 @@ export class SidebarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(signInData => {
       if (signInData) {
         this.authService.signIn(signInData).subscribe((res) => {
-          this.isUserSignedIn = true;
-          this.username = res['userDetails'].username;
+          this.authService.isUserSignedIn = true;
+          this.authService = res['userDetails'].username;
           localStorage.setItem('token', res['token']);        })
       }
     });
@@ -40,8 +37,8 @@ export class SidebarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(signUpData => {
       if (signUpData) {
         this.authService.signUp(signUpData).subscribe((res) => {
-          this.isUserSignedIn = true;
-          this.username = res['userDetails'].username;
+          this.authService.isUserSignedIn = true;
+          this.authService.username = res['userDetails'].username;
           localStorage.setItem('token', res['token']);
         })
       }
@@ -49,7 +46,7 @@ export class SidebarComponent implements OnInit {
   }
 
   openJoinRoomDialog(): void {
-    if (this.isUserSignedIn){
+    if (this.authService.isUserSignedIn){
       
       const dialogRef = this.dialog.open(JoinRoomComponent);
 
@@ -66,7 +63,7 @@ export class SidebarComponent implements OnInit {
   }
 
   openCreateRoomDialog(): void {
-    if (this.isUserSignedIn){
+    if (this.authService.isUserSignedIn){
 
       const dialogRef = this.dialog.open(CreateRoomComponent);
 
@@ -84,8 +81,8 @@ export class SidebarComponent implements OnInit {
 
   signOut() {
     localStorage.removeItem('token');
-    this.username = '';
-    this.isUserSignedIn = false;
+    this.authService.username = '';
+    this.authService.isUserSignedIn = false;
   }
 
   ngOnInit(): void {

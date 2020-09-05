@@ -8,6 +8,9 @@ export class AuthService {
     private static readonly signInUrl = "https://localhost:32774/api/Users/login";
     private static readonly signUpUrl = "https://localhost:32774/api/Users/register";
 
+    username = 'natalija';
+    isUserSignedIn = false;
+
     constructor(private http: HttpClient) {}
 
     public signIn(user) {

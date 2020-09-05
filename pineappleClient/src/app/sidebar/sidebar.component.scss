@@ -8,8 +8,20 @@
   &__btn {
     margin-right: 20px;
   }
+
+  &__chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px;
+    border-radius: 4px;
+    max-height: 70vh;
+    margin: 20px 0;
+    flex-grow: 1;
+    border: 1px solid grey;
+  }
 }
 
 .sameWithButtons {
   width: 120px;
- }
+}

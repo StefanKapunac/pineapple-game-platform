@@ -1,0 +1,39 @@
+<div class="chat">
+  <div 
+    class="message"
+    [ngClass]="{'message--my': message.username === authService.username}"
+    *ngFor="let message of mockChat"
+  >
+    <div *ngIf="message.username !== authService.username; else myMessage">
+      <div class="message__username">
+        {{message.username}}
+      </div>
+      <div class="message__content">
+        {{message.content}}
+      </div>
+    </div>
+
+    <ng-template #myMessage>
+      <div class="message__content">
+        {{message.content}}
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="message-send">
+  <input
+    class="message-send__input"
+    placeholder="Message"
+    [(ngModel)]="messageSendContent"
+    (keydown.enter)="sendMessage()"
+  >
+  <button
+    class="message-send__btn"
+    color="accent"
+    mat-icon-button
+    (click)="sendMessage()"
+  >
+    <mat-icon>send</mat-icon>
+  </button>
+</div>

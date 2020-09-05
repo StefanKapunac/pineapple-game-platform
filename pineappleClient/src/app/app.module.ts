@@ -12,6 +12,7 @@ import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { JoinRoomComponent } from './join-room/join-room.component';
     SignupComponent,
     CreateRoomComponent,
     JoinRoomComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,

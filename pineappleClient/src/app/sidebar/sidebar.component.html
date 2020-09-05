@@ -1,27 +1,5 @@
 <div class="sidebar">
- <div>
-    <button
-      class="sameWithButtons sidebar__btn"
-      mat-raised-button
-      color="accent"
-      (click)="openJoinRoomDialog()"
-    >
-      Join Room
-    </button>
-    <button
-      class="sameWithButtons"
-      mat-stroked-button
-      color="accent"
-      (click)="openCreateRoomDialog()"
-    >
-      Create Room
-    </button>
-  </div>
-
-  <br/>
-  <br/>
-
-  <div *ngIf="!isUserSignedIn; else notSignedInButton">
+  <div *ngIf="!authService.isUserSignedIn; else notSignedInButton">
     <button
       class="sameWithButtons sidebar__btn"
       mat-raised-button
@@ -53,6 +31,28 @@
       </button>
     </div>
   </ng-template>
+
+  <app-chat class='sidebar__chat'>
+  </app-chat>
+
+  <div>
+    <button
+      class="sameWithButtons sidebar__btn"
+      mat-raised-button
+      color="accent"
+      (click)="openJoinRoomDialog()"
+    >
+      Join Room
+    </button>
+    <button
+      class="sameWithButtons"
+      mat-stroked-button
+      color="accent"
+      (click)="openCreateRoomDialog()"
+    >
+      Create Room
+    </button>
+  </div>
 </div>
 
 <ng-template #notSignedInDialog>
