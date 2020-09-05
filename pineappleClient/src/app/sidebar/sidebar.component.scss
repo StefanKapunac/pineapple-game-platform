@@ -1,5 +1,9 @@
 .sidebar {
   padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: -webkit-fill-available;
 
   &__btn {
     margin-right: 20px;

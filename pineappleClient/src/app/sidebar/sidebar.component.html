@@ -1,41 +1,58 @@
 <div class="sidebar">
-  <button
-    class="sameWithButtons sidebar__btn"
-    mat-raised-button
-    color="accent"
-    
-    (click)="openSignInDialog()"
-  >
-    Sign In
-  </button>
-  <button
-    class="sameWithButtons"
-    mat-stroked-button
-    color="accent"
-    (click)="openSignUpDialog()"
-  >
-    Sing Up
-  </button>
+ <div>
+    <button
+      class="sameWithButtons sidebar__btn"
+      mat-raised-button
+      color="accent"
+      (click)="openJoinRoomDialog()"
+    >
+      Join Room
+    </button>
+    <button
+      class="sameWithButtons"
+      mat-stroked-button
+      color="accent"
+      (click)="openCreateRoomDialog()"
+    >
+      Create Room
+    </button>
+  </div>
 
   <br/>
   <br/>
 
-  <button
-    class="sameWithButtons sidebar__btn"
-    mat-raised-button
-    color="accent"
-    (click)="openJoinRoomDialog()"
-  >
-    Join Room
-  </button>
-  <button
-    class="sameWithButtons"
-    mat-stroked-button
-    color="accent"
-    (click)="openCreateRoomDialog()"
-  >
-    Create Room
-  </button>
+  <div *ngIf="!isUserSignedIn; else notSignedInButton">
+    <button
+      class="sameWithButtons sidebar__btn"
+      mat-raised-button
+      color="accent"
+      
+      (click)="openSignInDialog()"
+    >
+      Sign In
+    </button>
+    <button
+      class="sameWithButtons"
+      mat-stroked-button
+      color="accent"
+      (click)="openSignUpDialog()"
+    >
+      Sing Up
+    </button>
+  </div>
+  <ng-template #notSignedInButton>
+    <div>
+      <button
+        class="sameWithButtons sidebar__btn"
+        mat-raised-button
+        color="accent"
+        
+        (click)="signOut()"
+      >
+        Sign Out
+      </button>
+    </div>
+  </ng-template>
 </div>
 
 <ng-template #notSignedInDialog>
