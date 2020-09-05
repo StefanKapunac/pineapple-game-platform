@@ -96,9 +96,14 @@ namespace Identity.Controllers
             var user = _mapper.ToEntity(userDTO);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            var tokenString = GenerateJWTToken(user);
 
             //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return user;
+            return Ok(new
+            {
+                token = tokenString,
+                userDetails = user,
+            });
         }
 
         // POST: api/Users/login
