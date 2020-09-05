@@ -61,6 +61,17 @@ namespace Identity
 
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowCredentials();
+                });
+            });
+
             services.AddTransient<IMapper<User, UserDTO>, UserMapper>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -86,6 +97,8 @@ namespace Identity
             });
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
