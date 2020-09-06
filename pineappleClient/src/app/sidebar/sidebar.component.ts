@@ -5,6 +5,8 @@ import { SignupComponent } from '../signup/signup.component';
 import { JoinRoomComponent } from '../join-room/join-room.component';
 import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
+import { RoomService } from '../services/room.service';
+import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,10 +15,10 @@ import { AuthService } from '../services/auth.service';
   entryComponents: [SigninComponent, SignupComponent, JoinRoomComponent, CreateRoomComponent]
 })
 export class SidebarComponent implements OnInit {
-  @ViewChild('notSignedInDialog') notSignedInDialog: TemplateRef<any>;
 
   constructor(public dialog: MatDialog,
-              public authService: AuthService) { }
+              public authService: AuthService,
+              public roomService: RoomService) { }
 
   openSignInDialog(): void {
     const dialogRef = this.dialog.open(SigninComponent);
@@ -45,37 +47,20 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  openJoinRoomDialog(): void {
-    if (this.authService.isUserSignedIn){
-      
-      const dialogRef = this.dialog.open(JoinRoomComponent);
-
-      dialogRef.afterClosed().subscribe(joinRoomData => {
-        if (joinRoomData) {
-          console.log(joinRoomData);
-        }
-      });
-
-    }
-    else {
-      this.dialog.open(this.notSignedInDialog);
-    }
-  }
-
   openCreateRoomDialog(): void {
     if (this.authService.isUserSignedIn){
 
       const dialogRef = this.dialog.open(CreateRoomComponent);
 
-      dialogRef.afterClosed().subscribe(createRoomData => {
-        if (createRoomData) {
-          console.log(createRoomData);
+      dialogRef.afterClosed().subscribe(gameName => {
+        if (gameName) {
+          this.roomService.createRoom(gameName, this.authService.username)
         }
       });
 
     }
     else {
-      this.dialog.open(this.notSignedInDialog);
+      this.dialog.open(NotSignedinComponent);
     }
   }
 
@@ -83,6 +68,10 @@ export class SidebarComponent implements OnInit {
     localStorage.removeItem('token');
     this.authService.username = '';
     this.authService.isUserSignedIn = false;
+  }
+
+  closeRoom() {
+    this.roomService.closeRoom();
   }
 
   ngOnInit(): void {

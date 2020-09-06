@@ -8,9 +8,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateRoomComponent implements OnInit {
 
-  createRoomData = {
-    game: '',
-  };
   constructor(
     public dialogRef: MatDialogRef<CreateRoomComponent>
   ) 

@@ -1,27 +1,19 @@
-<div class="dialog">
-    <h1 mat-dialog-title>
-      Join Room
-    </h1>
-    <div mat-dialog-content>
-      <form>
-        <mat-form-field color="accent" class="dialog__input">
-          <mat-label>Room Id</mat-label>
-          <input
-            matInput
-            placeholder="Room Id"
-            [(ngModel)]="joinRoomData.id"
-            name="id"
-          />
-        </mat-form-field>
-        <br/>
-      </form>
-    </div>
-    <div mat-dialog-actions>
-      <button
-        mat-raised-button
-        color="accent"
-        class="dialog__button"
-        [mat-dialog-close]="joinRoomData"
-      >Join Room</button>
-    </div>
-  </div>
+<div class="roomType" color="accent">
+  Tic-Tac-Toe Rooms 
+</div>
+<div *ngFor="let room of roomService.getTicTacToeRooms()">
+  <div class="room">Room {{room.roomId}}</div>
+  <button class="buttonJoin" mat-mini-fab color="accent" (click)="onJoinRoom(room)">
+    Join
+  </button>
+</div>
+
+<div class="roomType" color="accent">
+  Hangman Rooms 
+</div>
+<div *ngFor="let room of roomService.getHangmanRooms()">
+  <div class="room">Room {{room.roomId}}</div>
+  <button class="buttonJoin" mat-mini-fab color="accent" (click)="onJoinRoom(room)">
+    Join
+  </button>
+</div>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../services/auth.service';
+import { RoomService } from '../services/room.service';
+import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
 
 @Component({
   selector: 'app-join-room',
@@ -12,11 +15,21 @@ export class JoinRoomComponent implements OnInit {
     id: '',
   };
   constructor(
-    public dialogRef: MatDialogRef<JoinRoomComponent>
+    public authService: AuthService,
+    public roomService: RoomService,
+    public dialog: MatDialog
   ) 
   { }
 
   ngOnInit(): void {
   }
-
+  
+  onJoinRoom(room){
+    if(this.authService.isUserSignedIn){
+      this.roomService.joinRoom(room);
+    }
+    else{
+      this.dialog.open(NotSignedinComponent);
+    }
+  }
 }

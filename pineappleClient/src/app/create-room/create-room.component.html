@@ -3,25 +3,23 @@
         Create New Room
     </h1>
     <div mat-dialog-content>
-        <form>
-          <mat-form-field color="accent" class="dialog__input">
-            <mat-label>Choose game</mat-label>
-            <input
-              matInput
-              placeholder="Game name"
-              [(ngModel)]="createRoomData.game"
-              name="game"
-            />
-          </mat-form-field>
-          <br/>
-        </form>
+      <mat-label>Choose game</mat-label>
     </div>
     <div mat-dialog-actions>
         <button
         mat-raised-button
         color="accent"
         class="dialog__button"
-        [mat-dialog-close]="createRoomData"
-        >Create Room</button>
+        mat-dialog-close
+        mat-dialog-close="xo"
+        >Room for Tic-Tac-Toe</button>
+        
+        <button
+        mat-raised-button
+        color="accent"
+        class="dialog__button"
+        mat-dialog-close
+        mat-dialog-close="hm"
+        >Room for Hangman</button>
     </div>
 </div>

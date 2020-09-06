@@ -32,37 +32,33 @@
     </div>
   </ng-template>
 
-  <app-chat class='sidebar__chat'>
-  </app-chat>
+  <div *ngIf="roomService.gameInProgress; else joinDisplay">
+    <app-chat class='sidebar__chat'>
+    </app-chat>
 
-  <div>
     <button
-      class="sameWithButtons sidebar__btn"
-      mat-raised-button
-      color="accent"
-      (click)="openJoinRoomDialog()"
-    >
-      Join Room
-    </button>
-    <button
-      class="sameWithButtons"
-      mat-stroked-button
-      color="accent"
-      (click)="openCreateRoomDialog()"
-    >
-      Create Room
-    </button>
+        class="sameWithButtons"
+        mat-stroked-button
+        color="accent"
+        (click)="closeRoom()"
+      >
+        Close room
+      </button>
   </div>
+
+  <ng-template #joinDisplay>
+    <app-join-room class='sidebar__chat'></app-join-room>
+
+    <div>
+      <button
+        class="sameWithButtons"
+        mat-stroked-button
+        color="accent"
+        (click)="openCreateRoomDialog()"
+      >
+        Create Room
+      </button>
+    </div>
+  </ng-template>
+
 </div>
-
-<ng-template #notSignedInDialog>
-  <h2 matDialogTitle>
-    You're not signed in!
-  </h2>
-  <p matDialogContent>To enter or create new room, please sign in.</p>
-  
-  <mat-dialog-actions align="end">
-    <button mat-button matDialogClose>Dismiss</button>
-  </mat-dialog-actions>
-
-</ng-template>
