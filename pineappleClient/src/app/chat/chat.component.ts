@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import * as signalR from "@aspnet/signalr";
 
 @Component({
   selector: 'app-chat',
@@ -7,47 +8,49 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  mockChat = [
-    {
-      username: "marija",
-      content: "Hello hello hello"
-    },
-    {
-      username: "stefan",
-      content: "Hello hello hello hello hello hello hello hello hello"
-    },
-    {
-      username: "natalija",
-      content: "Hello hello"
-    },
-    {
-      username: "tijana",
-      content: "Hello"
-    },
-    {
-      username: "marija",
-      content: "Hello hello"
-    },
-    {
-      username: "natalija",
-      content: "Hello"
-    },
-  ];
+  private hubConnection: signalR.HubConnection
+  public chat: Array<any> = [];
+  public messageSendContent = '';
 
-  messageSendContent = '';
+  startConnection() {
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl('https://localhost:32772/chathub')
+      .build();
+    
+    this.hubConnection
+      .start()
+      .then(async () => {
+        console.log('Connection started');
 
-  constructor(public authService: AuthService) { }
+        this.hubConnection.on('ReceiveMessage', (message) => {
+          if (this.authService.username !== message.user) {
+            this.chat.push(message);
+          }
+        });
+
+        await this.hubConnection.send('Join', this.authService.username, 'group1');
+      })
+      .catch(err => {
+        console.log('Error while starting connection: ' + err);
+      });
+  }
+
+  constructor(public authService: AuthService) {
+    this.startConnection();
+  }
 
   ngOnInit(): void {
   }
 
-  sendMessage() {
+  async sendMessage() {
     const message = {
-      "username": this.authService.username,
-      "content": this.messageSendContent
+      "user": this.authService.username,
+      "message": this.messageSendContent
     };
 
-    this.mockChat = [ ...this.mockChat, message ];
+    await this.hubConnection.send('SendMessage', message, 'group1');
+
+    this.chat.push(message);
     this.messageSendContent = '';
   }
 

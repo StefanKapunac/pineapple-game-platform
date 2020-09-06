@@ -27,8 +27,9 @@ export class SidebarComponent implements OnInit {
       if (signInData) {
         this.authService.signIn(signInData).subscribe((res) => {
           this.authService.isUserSignedIn = true;
-          this.authService = res['userDetails'].username;
-          localStorage.setItem('token', res['token']);        })
+          this.authService.username = res['userDetails'].username;
+          localStorage.setItem('token', res['token']);
+        })
       }
     });
   }
