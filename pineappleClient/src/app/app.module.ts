@@ -14,6 +14,7 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
 import { ChatComponent } from './chat/chat.component';
 import { NotSignedinComponent } from './not-signedin/not-signedin.component';
+import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { NotSignedinComponent } from './not-signedin/not-signedin.component';
     JoinRoomComponent,
     ChatComponent,
     NotSignedinComponent,
+    TicTacToeComponent,
   ],
   imports: [
     BrowserModule,

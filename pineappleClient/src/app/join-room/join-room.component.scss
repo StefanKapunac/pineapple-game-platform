@@ -1,20 +1,13 @@
 .roomType {
-    display: flex;
-    flex-direction: column;
-    background-color: grey;
+    border: 1px solid grey;
     padding: 10px 10px;
-    margin-bottom: 10px;
     border-radius: 4px;
 }  
 
 .room {
-    float: left;
-    margin-left: 20px;
-    padding-top: 10px;
-    border-bottom: 1px solid gray;
-}  
-
-.buttonJoin {
-    float: right;
-    margin-left: 10px;
-}  
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

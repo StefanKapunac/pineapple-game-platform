@@ -1,0 +1,37 @@
+<div class="game">
+  <h1 class="game__title">TIC TAC TOE</h1>
+  
+  <div class="board">
+    <div
+      *ngFor="let cell of board; index as i"
+      class="board__cell"
+      (click)="handleCellClick(i)"
+      [ngClass]="{'board__cell--disabled': isCellDisabled(i)}"
+    >
+      {{cell}}
+    </div> 
+  </div>
+
+  <h2
+    *ngIf="!gameOver; else gameResult"
+    [ngClass]="{'hide': player !== currentPlayer}"
+    class="game__turn"
+  >
+    It's your turn
+  </h2>
+  <ng-template #gameResult>
+    <h2 class="game__result">
+      {{result}}
+    </h2>
+  </ng-template>
+
+  <button
+    mat-raised-button
+    color="accent"
+    class="board__btn"
+    [disabled]="!gameOver"
+    (click)="handlePlayAgain()"
+  >
+    Play again
+  </button>
+</div>

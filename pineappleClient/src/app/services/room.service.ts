@@ -25,8 +25,8 @@ export class RoomService {
   joinRoom(room){
     console.log(room);
     this.gameInProgress = true;
-  };
-  
+  }
+
   createRoom(gameName, loggedUser){
 
     console.log({gameName:gameName, participants:[loggedUser]});

@@ -10,20 +10,18 @@ import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
   styleUrls: ['./join-room.component.scss']
 })
 export class JoinRoomComponent implements OnInit {
-  
+
   joinRoomData = {
     id: '',
   };
-  constructor(
-    public authService: AuthService,
-    public roomService: RoomService,
-    public dialog: MatDialog
-  ) 
-  { }
+
+  constructor(public authService: AuthService,
+              public roomService: RoomService,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
   }
-  
+
   onJoinRoom(room){
     if(this.authService.isUserSignedIn){
       this.roomService.joinRoom(room);
