@@ -9,5 +9,7 @@ namespace Game.Models
     {
         public string PlayerName { get; set; }
 
+        //role of the player that played the move
+        public string Role { get; set; }
     }
 }

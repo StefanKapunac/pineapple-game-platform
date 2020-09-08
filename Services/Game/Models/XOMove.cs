@@ -7,8 +7,7 @@ namespace Game.Models
 {
     public class XOMove : Move
     {
-        //true if X, false if O played the move
-        public bool X { get; set; }
+        public static readonly string[] Roles = { "X", "O" };
 
         //one of nine fields
         public int Field { get; set; }

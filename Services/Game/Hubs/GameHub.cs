@@ -1,4 +1,5 @@
 ﻿using Game.Models;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,10 @@ namespace Game.Hubs
     public class GameHub : Hub
     {
         // maps playerName to connection id
-        private readonly static Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
+
+        // maps connection id to group
+        private static readonly Dictionary<string, string> _ConnectionToGroup = new Dictionary<string, string>();
 
         // maps groupName to gameName
         //private readonly static Dictionary<string, string> _GamesMap = new Dictionary<string, string>();
@@ -19,25 +23,48 @@ namespace Game.Hubs
         // first method that client should invoke
         public async Task Join(string playerName, string groupName, string gameName)
         {
-            //add user to map
-            AddPlayer(playerName);
+            //add playername and connection to map
+            _ConnectionsMap.Add(playerName, Context.ConnectionId);
+
+            //add connection and group to map
+            _ConnectionToGroup.Add(Context.ConnectionId, groupName);
 
             //which game is played in this group
             //_GamesMap.Add(groupName, gameName);
-            
+
             //add user to group
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            //send player assigned role
+            int numPlayersInGroup = _ConnectionToGroup.Where(t => t.Value == groupName).Count();
+            if(gameName == "XO")
+            {
+                if (numPlayersInGroup == XOMove.Roles.Length)
+                {
+                    // this should not happen
+                    throw new Exception();
+                }
+                await Clients.Caller.SendAsync("RoleAssigned", XOMove.Roles[numPlayersInGroup]);
+            }
+            else if(gameName == "Hangman")
+            {
+                if (numPlayersInGroup == HangmanMove.Roles.Length)
+                {
+                    // this should not happen
+                    throw new Exception();
+                }
+                await Clients.Caller.SendAsync("RoleAssigned", HangmanMove.Roles[numPlayersInGroup]);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
         public async Task PlayMove(Move move, string groupName)
         {
             //sends the move from move.playerName to other players in the group
             await Clients.Group(groupName).SendAsync("MovePlayed", move);
-        }
-
-        private void AddPlayer(string playerName)
-        {
-            _ConnectionsMap.Add(playerName, Context.ConnectionId);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

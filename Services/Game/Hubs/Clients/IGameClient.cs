@@ -9,5 +9,7 @@ namespace Game.Hubs.Clients
     interface IGameClient
     {
         Task MovePlayed(Move move);
+
+        Task RoleAssigned(string role);
     }
 }
