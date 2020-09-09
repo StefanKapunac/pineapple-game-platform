@@ -1,0 +1,37 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game_display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px;
+}
+
+.hangman{
+  align-self: flex-start;
+  margin-right: 40px;
+}
+.mat-raised {
+    margin: 0px 3px;
+    font-size: larger;
+  } ;
+  
+.row {
+  justify-content: center;
+  padding: 3px 0px;
+  display: flex;
+}
+
+.result {
+  color: #424242;
+  margin: 5px;
+  font-size: 50px;
+}
+
+.b{
+  align-self: flex-end;
+}
+

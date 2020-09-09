@@ -15,6 +15,7 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { ChatComponent } from './chat/chat.component';
 import { NotSignedinComponent } from './not-signedin/not-signedin.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
+import { HangmanComponent } from './hangman/hangman.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
     ChatComponent,
     NotSignedinComponent,
     TicTacToeComponent,
+    HangmanComponent,
   ],
   imports: [
     BrowserModule,

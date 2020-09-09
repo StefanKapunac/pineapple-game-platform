@@ -1,0 +1,52 @@
+<div class="game">
+    <div class="game_display">
+        <div class="hangman">
+            <ng-container [ngSwitch]=guessedIncorrectLetters.length>
+                <img *ngSwitchCase=0 src="assets/hangman0.png">
+                <img *ngSwitchCase=1 src="assets/hangman1.png">
+                <img *ngSwitchCase=2 src="assets/hangman2.png">
+                <img *ngSwitchCase=3 src="assets/hangman3.png">
+                <img *ngSwitchCase=4 src="assets/hangman4.png">
+                <img *ngSwitchCase=5 src="assets/hangman5.png">
+                <img *ngSwitchCase=6 src="assets/hangman6.png">
+                <img *ngSwitchCase=7 src="assets/hangman7.png">
+            </ng-container>
+        </div>
+
+        <div *ngFor="let letter of guessedWord">
+            <p class="result">{{letter}}</p>
+        </div>
+    </div>
+
+    <div *ngIf="gameOver; else gameInProgress">
+        <h2 class="result">
+            {{result}}
+        </h2>
+    </div>
+
+    <ng-template #gameInProgress class="b">
+        <div *ngFor="let row of keyboard; let i = index" class="row">
+            <span *ngFor="let key of row">
+                
+                <ng-container [ngSwitch]=key.value>
+                <button *ngSwitchCase=0
+                    mat-raised-button color="accent"
+                    (click)="onClickLetter(key.letter, i)">
+                    {{ key.letter }}
+                </button>
+                <button *ngSwitchCase=1 
+                    mat-raised-button color="basic">
+                    {{ key.letter }}
+                </button>
+                <button *ngSwitchCase=2
+                    mat-flat-button color="basic">
+                    {{ key.letter }}
+                </button>
+                </ng-container>
+            </span>
+        </div>
+    </ng-template>
+    <div *ngFor="let l of guessedCorrectLetters"><p>{{l}}</p></div>
+    <div *ngFor="let l of guessedIncorrectLetters"><p>{{l}}</p></div>
+
+</div>
