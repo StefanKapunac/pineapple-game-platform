@@ -1,4 +1,5 @@
-﻿using Game.Models;
+﻿using Game.Hubs.Clients;
+using Game.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Game.Hubs
 {
-    public class GameHub : Hub
+    public class GameHub : Hub<IGameClient>
     {
         // maps playerName to connection id
         private static readonly Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
@@ -44,7 +45,7 @@ namespace Game.Hubs
                     // this should not happen
                     throw new Exception();
                 }
-                await Clients.Caller.SendAsync("RoleAssigned", XOMove.Roles[numPlayersInGroup]);
+                await Clients.Caller.RoleAssigned(XOMove.Roles[numPlayersInGroup]);
             }
             else if(gameName == "Hangman")
             {
@@ -53,7 +54,7 @@ namespace Game.Hubs
                     // this should not happen
                     throw new Exception();
                 }
-                await Clients.Caller.SendAsync("RoleAssigned", HangmanMove.Roles[numPlayersInGroup]);
+                await Clients.Caller.RoleAssigned(HangmanMove.Roles[numPlayersInGroup]);
             }
             else
             {
@@ -64,7 +65,7 @@ namespace Game.Hubs
         public async Task PlayMove(Move move, string groupName)
         {
             //sends the move from move.playerName to other players in the group
-            await Clients.Group(groupName).SendAsync("MovePlayed", move);
+            await Clients.Group(groupName).MovePlayed(move);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

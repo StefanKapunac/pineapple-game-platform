@@ -29,6 +29,20 @@ namespace RoomService
         {
             services.AddControllers();
 
+            services.AddSignalR();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        //.WithOrigins("http://localhost:3000")
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowCredentials();
+                });
+            });
+
             services.AddDbContext<RoomServiceContext>(options =>
                     options.UseInMemoryDatabase("RoomService"));
 
@@ -54,6 +68,8 @@ namespace RoomService
             });
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 

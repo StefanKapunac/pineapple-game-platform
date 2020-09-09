@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RoomService.Data;
+using RoomService.Hubs;
+using RoomService.Hubs.Clients;
 using RoomService.Models;
 
 namespace RoomService.Controllers
@@ -14,11 +17,17 @@ namespace RoomService.Controllers
     [ApiController]
     public class RoomRequestsController : ControllerBase
     {
+
+        private readonly IHubContext<RoomHub, IRoomHubClient> _roomHub;
+
+        private readonly Dictionary<string, string> _participantToGroup = new Dictionary<string, string>();
+
         private readonly RoomServiceContext _context;
 
-        public RoomRequestsController(RoomServiceContext context)
+        public RoomRequestsController(RoomServiceContext context, IHubContext<RoomHub, IRoomHubClient> roomHub)
         {
             _context = context;
+            _roomHub = roomHub;
         }
 
         // GET: api/RoomRequests
@@ -73,11 +82,19 @@ namespace RoomService.Controllers
             _context.Rooms.Update(room);
             _context.Participants.Add(roomRequest.Participant);
 
+            _participantToGroup.Add(roomRequest.Participant.Name, id.ToString());
+
             // ako je puna soba - pokreni igricu
             int maxParticipants = Room.games.Where(g => g.Id == room.GameId).Select(g => g.NumPlayers).FirstOrDefault();
             if (room.Participants.Count() == maxParticipants)
             {
-                Console.WriteLine("puna soba");
+                //Console.WriteLine("puna soba");
+                // send signal to frontend
+                await _roomHub.Clients.Group(id.ToString()).FullRoom();
+            }
+            else
+            {
+                await _roomHub.Clients.All.RoomUpdated(room);
             }
 
             try
@@ -106,21 +123,28 @@ namespace RoomService.Controllers
         public async Task<ActionResult<Room>> PostRoomRequest(RoomRequest roomRequest)
         {
             //Room room = new Room(roomRequest.GameId, new HashSet<Participant> { roomRequest.Participant });
-            Participant p = new Participant();
-            p.Id = roomRequest.Participant.Id;
-            p.Name = roomRequest.Participant.Name;
+            Participant p = new Participant {
+                Id = roomRequest.Participant.Id,
+                Name = roomRequest.Participant.Name
+            };
             _context.Participants.Add(p);
 
-            Room room = new Room();
-            room.Participants = new HashSet<Participant> { p };
+            Room room = new Room {
+                Participants = new HashSet<Participant> { p }
+            };
             // da li je gameId ispravan
-            if(!Room.games.Any(g => g.Id == roomRequest.GameId))
+            if (!Room.games.Any(g => g.Id == roomRequest.GameId))
             {
                 return BadRequest("There is no game with the requested id");
             }
             room.GameId = roomRequest.GameId;
             _context.Rooms.Add(room);
+            
+            _participantToGroup.Add(roomRequest.Participant.Name, room.Id.ToString());
+
             await _context.SaveChangesAsync();
+
+            await _roomHub.Clients.All.RoomMade(room);
 
             //Room r = _context.Rooms.Find(room.Id);
 

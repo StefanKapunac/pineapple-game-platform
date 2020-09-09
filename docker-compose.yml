@@ -3,6 +3,8 @@ version: '3.4'
 services:
   identity:
     image: ${DOCKER_REGISTRY-}identity
+    ports:
+      - "5430:443"
     environment:
       - ConnectionString=Server=mssqldata;Database=IdentityDb;User Id=sa;Password=Pass@word2019
     build:
@@ -13,6 +15,8 @@ services:
 
   chat:
     image: ${DOCKER_REGISTRY-}chat
+    ports:
+      - "5431:443"
     build:
       context: .
       dockerfile: Services/Chat/Chat/Dockerfile
@@ -20,6 +24,8 @@ services:
 
   roomservice:
     image: ${DOCKER_REGISTRY-}roomservice
+    ports:
+      - "5432:443"
     build:
       context: .
       dockerfile: Services/RoomService/RoomService/Dockerfile
@@ -39,6 +45,8 @@ services:
 
   game:
     image: ${DOCKER_REGISTRY-}game
+    ports:
+      - "5433:443"
     build:
       context: .
       dockerfile: Services/Game/Dockerfile

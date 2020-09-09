@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game.Hubs.Clients
 {
-    interface IGameClient
+    public interface IGameClient
     {
         Task MovePlayed(Move move);
 

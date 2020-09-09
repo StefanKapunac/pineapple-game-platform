@@ -32,7 +32,7 @@ namespace RoomService.Models
             }
         }
 
-        public static readonly Game[] games = { new Game(1, "xo", 2), new Game(2, "chess", 2) };
+        public static readonly Game[] games = { new Game(1, "xo", 2), new Game(2, "hangman", 3) };
 
     }
   

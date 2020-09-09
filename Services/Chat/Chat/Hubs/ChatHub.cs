@@ -11,7 +11,7 @@ namespace ChatApi.Hubs
     public class ChatHub : Hub<IChatClient>
     {
         // maps username to connection id
-        private readonly static Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
 
 
         public async Task SendMessage(ChatMessage message, string groupName)
