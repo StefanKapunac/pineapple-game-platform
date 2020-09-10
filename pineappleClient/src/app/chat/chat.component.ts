@@ -14,7 +14,7 @@ export class ChatComponent implements OnInit {
 
   startConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:32772/chathub')
+      .withUrl('https://localhost:5431/chathub')
       .build();
     
     this.hubConnection

@@ -1,36 +1,45 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Room } from './room.model';
+import { filter} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-  roomsWaiting = [
-    {gameName:"xo", roomId:1, participants:['natalija']},
-    {gameName:"xo", roomId:2, participants:['tijana', 'marija']},
-    {gameName:"hm", roomId:3, participants:['natalija']},
-    {gameName:"xo", roomId:4, participants:['stefan']},
-    {gameName:"xo", roomId:5, participants:['stefan', 'marija']}
-  ];
+  private static readonly url = 'https://localhost:5432/api/RoomRequests';
+
+  roomsWaiting: Observable<Room[]>;
   gameInProgress = false;
-  constructor() { }
 
-  getTicTacToeRooms() {
-    return this.roomsWaiting.filter(room => room.gameName === "xo");
+  constructor(private http: HttpClient) {
+    this.roomsWaiting = this.http.get<Room[]>(RoomService.url);
   }
-
-  getHangmanRooms() {
-    return this.roomsWaiting.filter(room => room.gameName === "hm");
-  }
-
-  joinRoom(room){
+  
+  joinRoom(room, username){
     console.log(room);
+    console.log(username);
+    let body = {participant: {name: username}, gameId: room.gameId, roomId: room.id};
     this.gameInProgress = true;
+    return this.http.put(RoomService.url + '/' + room.id, body);
   }
 
   createRoom(gameName, loggedUser){
-
-    console.log({gameName:gameName, participants:[loggedUser]});
+    let gameId = 1;
+    if(gameName === "hm"){
+      gameId = 2;
+    }
+    console.log({gameName:gameName, participant: loggedUser});
+    let room = {
+      participant: {
+        name: loggedUser
+      },
+      gameId: gameId,
+    }
+    console.log(room);
     this.gameInProgress = true;
+    return this.http.post(RoomService.url, room);
   }
 
   closeRoom(){

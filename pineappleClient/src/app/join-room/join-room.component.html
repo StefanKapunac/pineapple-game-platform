@@ -1,8 +1,8 @@
 <div class="roomType" color="accent">
   Tic-Tac-Toe Rooms 
 </div>
-<div class="room__wrapper" *ngFor="let room of roomService.getTicTacToeRooms()">
-  <div class="room">Room {{room.roomId}}</div>
+<div class="room__wrapper" *ngFor="let room of getTicTacToeRooms()">
+  <div class="room">Room {{room.id}}</div>
   <button
     class="buttonJoin"
     mat-stroked-button
@@ -16,8 +16,8 @@
 <div class="roomType" color="accent">
   Hangman Rooms 
 </div>
-<div class="room__wrapper" *ngFor="let room of roomService.getHangmanRooms()">
-  <div class="room">Room {{room.roomId}}</div>
+<div class="room__wrapper" *ngFor="let room of getHangmanRooms()">
+  <div class="room">Room {{room.id}}</div>
   <button
     class="buttonJoin"
     mat-stroked-button

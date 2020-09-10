@@ -5,8 +5,8 @@ import { HttpClient } from "@angular/common/http";
     providedIn: 'root'
 })
 export class AuthService {
-    private static readonly signInUrl = "https://localhost:32774/api/Users/login";
-    private static readonly signUpUrl = "https://localhost:32774/api/Users/register";
+    private static readonly signInUrl = "https://localhost:5430/api/Users/login";
+    private static readonly signUpUrl = "https://localhost:5430/api/Users/register";
 
     username = '';
     isUserSignedIn = false;

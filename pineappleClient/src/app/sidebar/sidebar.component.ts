@@ -55,7 +55,9 @@ export class SidebarComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(gameName => {
         if (gameName) {
-          this.roomService.createRoom(gameName, this.authService.username)
+          this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
+          console.log(res);
+        });
         }
       });
 

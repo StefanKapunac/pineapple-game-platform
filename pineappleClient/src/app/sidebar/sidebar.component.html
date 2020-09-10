@@ -47,12 +47,15 @@
   </div>
 
   <ng-template #joinDisplay>
-    <!-- <app-join-room class='sidebar__chat'></app-join-room> -->
+    <div style="flex-grow: 1" *ngIf="authService.isUserSignedIn">
+    <app-join-room class='sidebar__chat'></app-join-room>
+    </div>
 
     <!-- change logic after connect with backend for groups -->
+    <!--
     <div style="flex-grow: 1" *ngIf="authService.isUserSignedIn">
       <app-chat class='sidebar__chat'></app-chat>
-    </div>
+    </div> -->
 
     <div>
       <button
