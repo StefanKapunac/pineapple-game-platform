@@ -6,43 +6,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hangman.component.scss']
 })
 export class HangmanComponent implements OnInit {
-  
-  public player: string = 'B';
+
+  public player = 'B';
+  public pickerPlayer = 'A';
   public currentPlayer: string;
-  public gameOver: boolean = false;
   public wonPlayer: string;
-  public pickerPlayer: string = 'A';
+  public gameOver = false;
 
   public keyboard = [];
-  public guessedCorrectLetters = [];
   public guessedIncorrectLetters = [];
+
   private pickedWord = 'pineapple';
   public guessedWord: string[];
-  public guessed = 0;
-  
-  
-  constructor() { 
-    let firstRow = []; 
+
+  public numOfGuessedLetters = 0;
+
+
+  constructor() {
+    const firstKeyboardRow = [];
     'QWERTYUIOP'.split('').forEach(letter => {
-      firstRow.push({letter: letter, value: 0});
+      firstKeyboardRow.push({letter, pressed: false});
     });
 
-    let secondRow = []; 
+    const secondKeyboardRow = [];
     'ASDFGHJKL'.split('').forEach(letter => {
-      secondRow.push({letter: letter, value: 0});
+      secondKeyboardRow.push({letter, pressed: false});
     });
 
-    let thirdRow = []; 
+    const thirdKeyboardRow = [];
     'ZXCVBNM'.split('').forEach(letter => {
-      thirdRow.push({letter: letter, value: 0});
+      thirdKeyboardRow.push({letter, pressed: false});
     });
 
-    this.keyboard.push(firstRow);
-    this.keyboard.push(secondRow);
-    this.keyboard.push(thirdRow);
+    this.keyboard.push(firstKeyboardRow);
+    this.keyboard.push(secondKeyboardRow);
+    this.keyboard.push(thirdKeyboardRow);
 
     this.guessedWord = '_'.repeat(this.pickedWord.length).split('');
-
   }
 
   get result() {
@@ -51,42 +51,45 @@ export class HangmanComponent implements OnInit {
       : 'You lost!';
   }
 
-  onClickLetter(letter, rowIndex: number){
+  onClickLetter(letter: string, rowIndex: number){
+    const foundKey = this.keyboard[rowIndex].find(key => key.letter === letter);
+    foundKey.pressed = true;
 
-    if (this.pickedWord.indexOf(letter) > -1 || this.pickedWord.indexOf(letter.toLowerCase()) > -1){
-      
-      this.keyboard[rowIndex].find(o => o.letter === letter).value=1;
-      this.guessedCorrectLetters.push(letter);
-
+    if (this.pickedWord.indexOf(letter) > -1 ||
+        this.pickedWord.indexOf(letter.toLowerCase()) > -1) {
       for (let i = 0; i < this.pickedWord.length; i++) {
-        
-        if(this.pickedWord[i] == letter.toLowerCase() || this.pickedWord[i] == letter){
+        if (this.pickedWord[i] === letter.toLowerCase() ||
+            this.pickedWord[i] === letter) {
           this.guessedWord[i] = letter;
-          this.guessed++;
+          this.numOfGuessedLetters++;
         }
-
       }
 
-      if (this.pickedWord.length == this.guessed ){
+      if (this.pickedWord.length === this.numOfGuessedLetters){
         this.wonPlayer = this.player;
         this.gameOver = true;
       }
-
-    }
-    else{
-      
-      this.keyboard[rowIndex].find(o => o.letter === letter).value=2;
+    } else {
       this.guessedIncorrectLetters.push(letter);
 
-      if(this.guessedIncorrectLetters.length == 7){
+      if (this.guessedIncorrectLetters.length === 7){
         this.gameOver = true;
         this.wonPlayer = this.pickerPlayer;
       }
     }
-  }
 
+    if (this.gameOver) {
+      this.keyboard = [...this.keyboard.map((row) => {
+        return row.map((key) => {
+          return {
+            letter: key.letter,
+            pressed: true,
+          };
+        });
+      })];
+    }
+  }
 
   ngOnInit(): void {
   }
-
 }
