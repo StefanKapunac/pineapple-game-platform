@@ -88,7 +88,7 @@ namespace RoomService.Controllers
             int maxParticipants = Room.games.Where(g => g.Id == room.GameId).Select(g => g.NumPlayers).FirstOrDefault();
             if (room.Participants.Count() == maxParticipants)
             {
-                //Console.WriteLine("puna soba");
+                Console.WriteLine("puna soba");
                 // send signal to frontend
                 await _roomHub.Clients.Group(id.ToString()).FullRoom();
             }
