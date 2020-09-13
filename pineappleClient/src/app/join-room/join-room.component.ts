@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../services/auth.service';
 import { RoomService } from '../services/room.service';
 import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
 import { Room } from './../services/room.model';
 import * as signalR from "@aspnet/signalr";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-join-room',
@@ -25,8 +26,12 @@ export class JoinRoomComponent implements OnInit {
       .then(async () => {
         console.log('connection with room service');
         
-        this.hubConnection.on('FullRoom', () => {
+        this.hubConnection.on('FullRoom', (fullRoom) => {
           console.log('full room');
+          this.rooms = this.rooms.filter(room => room.id !== fullRoom.id);
+          if (fullRoom.participants.findIndex(participant => participant.name === this.authService.username) !== -1) {
+            fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
+          }
         });
 
         this.hubConnection.on('RoomMade', (room) => {
@@ -47,7 +52,8 @@ export class JoinRoomComponent implements OnInit {
   
   constructor(public authService: AuthService,
               public roomService: RoomService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public router: Router) {
     this.startConnection();
   }
 

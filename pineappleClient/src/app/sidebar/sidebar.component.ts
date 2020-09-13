@@ -7,6 +7,7 @@ import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
 import { RoomService } from '../services/room.service';
 import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
               public authService: AuthService,
-              public roomService: RoomService) { }
+              public roomService: RoomService,
+              public router: Router) { }
 
   openSignInDialog(): void {
     const dialogRef = this.dialog.open(SigninComponent);
@@ -57,6 +59,7 @@ export class SidebarComponent implements OnInit {
         if (gameName) {
           this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
           console.log(res);
+          res['gameId'] === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
         });
         }
       });

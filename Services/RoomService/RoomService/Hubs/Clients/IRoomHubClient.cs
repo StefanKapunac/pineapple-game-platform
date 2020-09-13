@@ -8,7 +8,7 @@ namespace RoomService.Hubs.Clients
 {
     public interface IRoomHubClient
     {
-        Task FullRoom();
+        Task FullRoom(Room room);
 
         Task RoomMade(Room room);
 

@@ -89,11 +89,16 @@ namespace RoomService.Controllers
             if (room.Participants.Count() == maxParticipants)
             {
                 Console.WriteLine("puna soba");
+
+                _context.Rooms.Remove(room);
+                await _context.SaveChangesAsync();
+
                 // send signal to frontend
-                await _roomHub.Clients.Group(id.ToString()).FullRoom();
+                await _roomHub.Clients.All.FullRoom(room);
             }
             else
             {
+                Console.WriteLine("room updated");
                 await _roomHub.Clients.All.RoomUpdated(room);
             }
 
