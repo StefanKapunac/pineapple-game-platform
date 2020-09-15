@@ -24,6 +24,8 @@ namespace Game.Hubs
         // first method that client should invoke
         public async Task Join(string playerName, string groupName, string gameName)
         {
+            Console.WriteLine("Join " + playerName);
+
             //add playername and connection to map
             _ConnectionsMap.Add(playerName, Context.ConnectionId);
 
@@ -38,23 +40,24 @@ namespace Game.Hubs
 
             //send player assigned role
             int numPlayersInGroup = _ConnectionToGroup.Where(t => t.Value == groupName).Count();
-            if(gameName == "XO")
+
+            if (gameName == "XO")
             {
-                if (numPlayersInGroup == XOMove.Roles.Length)
+                if (numPlayersInGroup > XOMove.Roles.Length)
                 {
                     // this should not happen
                     throw new Exception();
                 }
-                await Clients.Caller.RoleAssigned(XOMove.Roles[numPlayersInGroup]);
+                await Clients.Caller.RoleAssigned(XOMove.Roles[numPlayersInGroup - 1]);
             }
             else if(gameName == "Hangman")
             {
-                if (numPlayersInGroup == HangmanMove.Roles.Length)
+                if (numPlayersInGroup > HangmanMove.Roles.Length)
                 {
                     // this should not happen
                     throw new Exception();
                 }
-                await Clients.Caller.RoleAssigned(HangmanMove.Roles[numPlayersInGroup]);
+                await Clients.Caller.RoleAssigned(HangmanMove.Roles[numPlayersInGroup - 1]);
             }
             else
             {
@@ -64,6 +67,13 @@ namespace Game.Hubs
 
         public async Task PlayMove(Move move, string groupName)
         {
+            //sends the move from move.playerName to other players in the group
+            await Clients.Group(groupName).MovePlayed(move);
+        }
+
+        public async Task PlayXOMove(XOMove move, string groupName)
+        {
+            Console.WriteLine(move);
             //sends the move from move.playerName to other players in the group
             await Clients.Group(groupName).MovePlayed(move);
         }

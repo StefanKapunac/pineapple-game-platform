@@ -5,7 +5,7 @@ import { HangmanComponent } from './hangman/hangman.component';
 
 
 const routes: Routes = [
-  { path: 'tic-tac-toe', component: TicTacToeComponent },
+  { path: 'tic-tac-toe/:roomId', component: TicTacToeComponent },
   { path: 'hangman', component: HangmanComponent },
 ];
 

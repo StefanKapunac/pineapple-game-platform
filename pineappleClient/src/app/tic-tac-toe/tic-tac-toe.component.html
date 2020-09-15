@@ -6,7 +6,7 @@
       *ngFor="let cell of board; index as i"
       class="board__cell"
       (click)="handleCellClick(i)"
-      [ngClass]="{'board__cell--disabled': isCellDisabled(i)}"
+      [ngClass]="{'board__cell--disabled': isCellDisabled(), 'board__cell--pressed': isCellPressed(i)}"
     >
       {{cell}}
     </div> 

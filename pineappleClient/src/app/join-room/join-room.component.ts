@@ -30,7 +30,7 @@ export class JoinRoomComponent implements OnInit {
           console.log('full room');
           this.rooms = this.rooms.filter(room => room.id !== fullRoom.id);
           if (fullRoom.participants.findIndex(participant => participant.name === this.authService.username) !== -1) {
-            fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
+            fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe', fullRoom.id]) : this.router.navigate(['hangman']);
           }
         });
 

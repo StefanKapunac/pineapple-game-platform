@@ -42,9 +42,13 @@
         box-shadow: none;
       }
 
-      &--disabled {
+      &--pressed {
         transform: scale(0.98);
         box-shadow: none;
+        pointer-events: none;
+      }
+
+      &--disabled {
         pointer-events: none;
       }
     }

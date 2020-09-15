@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import * as signalR from '@aspnet/signalr';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-tic-tac-toe',
@@ -22,8 +25,49 @@ export class TicTacToeComponent implements OnInit {
   public currentPlayer: string;
   public gameOver: boolean;
   public wonPlayer: string;
-  public board = ['X', 'X', '', 'O', 'O', 'X', '', '', ''];
+  public board = ['', '', '', '', '', '', '', '', ''];
 
+  private hubConnection: signalR.HubConnection;
+
+  startConnection() {
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl('https://localhost:5433/gamehub')
+      .build();
+    
+    this.hubConnection
+      .start()
+      .then(async () => {
+        console.log('Connection with gamehub started');
+
+        this.hubConnection.on('MovePlayed', (move) => {
+          if(move.role !== this.player) {
+            this.board[move.field] = move.role;
+            const combinations = this.WINNING_COMBINATIONS[move.field];
+
+            combinations.forEach(([firstIndex, secondIndex]) => {
+              if (this.board[firstIndex] === this.currentPlayer
+                  && this.board[secondIndex] === this.currentPlayer) {
+                this.wonPlayer = this.currentPlayer;
+                this.gameOver = true;
+              }
+            });
+  
+            this.currentPlayer = this.player;
+          }
+        });
+
+        this.hubConnection.on('RoleAssigned', (role) => {
+          console.log(role);
+          this.player = role;
+        })
+
+        const roomId = this.route.snapshot.params.roomId;
+        await this.hubConnection.send('Join', this.authService.username, roomId, 'XO');
+      })
+      .catch(err => {
+        console.log('Error while starting connection with gamehub: ' + err);
+      });
+  }
 
   get result() {
     return this.wonPlayer === this.player
@@ -31,18 +75,24 @@ export class TicTacToeComponent implements OnInit {
       : 'You lost!';
   }
 
-  handleCellClick(clickedCell) {
+  async handleCellClick(clickedCell) {
     this.board[clickedCell] = this.currentPlayer;
     this.board = [...this.board];
 
-    // PlayMove
+    const roomId = this.route.snapshot.params.roomId;
+    const move = {
+      playerName: this.authService.username,
+      role: this.player,
+      field: clickedCell,
+    }
+    await this.hubConnection.send('PlayXOMove', move, roomId);
 
     const combinations = this.WINNING_COMBINATIONS[clickedCell];
 
     combinations.forEach(([firstIndex, secondIndex]) => {
       if (this.board[firstIndex] === this.currentPlayer
           && this.board[secondIndex] === this.currentPlayer) {
-        this.wonPlayer = 'X';
+        this.wonPlayer = this.currentPlayer;
         this.gameOver = true;
       }
     });
@@ -51,16 +101,16 @@ export class TicTacToeComponent implements OnInit {
       return;
     }
 
-    // It's O's turn
-    this.currentPlayer = 'O';
-
-    // waiting for other player to play [MovePlayed]
+    this.currentPlayer = (this.player === 'O' ? 'X' : 'O');
   }
 
-  isCellDisabled(cell) {
+  isCellDisabled() {
     return this.gameOver
-      || this.player !== this.currentPlayer
-      || this.board[cell] !== '';
+      || this.player !== this.currentPlayer;
+  }
+
+  isCellPressed(cell) {
+    return this.board[cell] !== '';
   }
 
   handlePlayAgain() {
@@ -68,9 +118,9 @@ export class TicTacToeComponent implements OnInit {
     this.gameOver = false;
   }
 
-  constructor() {
-    // get X or O from backend
-    // for now is X
+  constructor(public authService: AuthService,
+              public route: ActivatedRoute) {
+    this.startConnection();
     this.player = 'X';
     this.currentPlayer = 'X';
     this.gameOver = false;
