@@ -11,5 +11,6 @@ namespace Game.Models
 
         //role of the player that played the move
         public string Role { get; set; }
+        
     }
 }

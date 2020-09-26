@@ -6,7 +6,7 @@ import { HangmanComponent } from './hangman/hangman.component';
 
 const routes: Routes = [
   { path: 'tic-tac-toe/:roomId', component: TicTacToeComponent },
-  { path: 'hangman', component: HangmanComponent },
+  { path: 'hangman/:roomId', component: HangmanComponent },
 ];
 
 @NgModule({

@@ -59,6 +59,8 @@ export class SidebarComponent implements OnInit {
         if (gameName) {
           this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
           console.log(res);
+
+          //res['gameId'] === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
         });
         }
       });

@@ -32,6 +32,8 @@ namespace Game.Hubs
             //add connection and group to map
             _ConnectionToGroup.Add(Context.ConnectionId, groupName);
 
+
+
             //which game is played in this group
             //_GamesMap.Add(groupName, gameName);
 
@@ -52,9 +54,10 @@ namespace Game.Hubs
             }
             else if(gameName == "Hangman")
             {
+                Console.WriteLine("hangman......");
                 if (numPlayersInGroup > HangmanMove.Roles.Length)
                 {
-                    // this should not happen
+                    Console.WriteLine("hangman......");
                     throw new Exception();
                 }
                 await Clients.Caller.RoleAssigned(HangmanMove.Roles[numPlayersInGroup - 1]);
@@ -71,10 +74,17 @@ namespace Game.Hubs
             await Clients.Group(groupName).MovePlayed(move);
         }
 
+
         public async Task PlayXOMove(XOMove move, string groupName)
         {
-            Console.WriteLine(move);
             //sends the move from move.playerName to other players in the group
+	    await Clients.Group(groupName).MovePlayed(move);
+	}
+
+
+        public async Task PlayHangmanMove(HangmanMove move, string groupName) 
+        {
+            Console.WriteLine(move);
             await Clients.Group(groupName).MovePlayed(move);
         }
 

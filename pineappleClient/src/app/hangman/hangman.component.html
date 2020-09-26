@@ -33,6 +33,39 @@
     </div>
   </div>
 
+    <input type="text" 
+    [ngClass]="{'hide': player != 'Choose' || wordIsPicked }"
+    [(ngModel)]="pickedWord">
+    <button
+    [ngClass]="{'hide': player != 'Choose' || wordIsPicked }"
+    mat-raised-button color="accent"
+    (click)="onChooseWord()"
+    >
+      Choose word
+    </button>
+
+  <div>
+      <h2
+        class="game__result"
+        [ngClass]="{'hide': gameOver}"
+      >
+        {{turn}}
+      </h2>
+  </div>
+  <div>
+      <div
+        [ngClass]="{'hide': player != 'Choose' }"
+      >
+        <div *ngFor="let letter of guessedIncorrectLetters">
+          <h1 class="word__letter">
+            {{letter}}
+          </h1>
+        </div>
+      </div>
+  </div>
+
+
+  <div [ngClass]="{'hide': player == 'Choose'}">
   <div class="keyboard">
     <div
       *ngFor="let row of keyboard; let i = index"
@@ -61,5 +94,6 @@
         </ng-container>
       </span>
     </div>
+  </div>
   </div>
 </div>
