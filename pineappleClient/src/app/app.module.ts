@@ -16,6 +16,7 @@ import { ChatComponent } from './chat/chat.component';
 import { NotSignedinComponent } from './not-signedin/not-signedin.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
 import { HangmanComponent } from './hangman/hangman.component';
+import { GamesComponent } from './games/games.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { HangmanComponent } from './hangman/hangman.component';
     NotSignedinComponent,
     TicTacToeComponent,
     HangmanComponent,
+    GamesComponent,
   ],
   imports: [
     BrowserModule,
