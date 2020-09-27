@@ -1,0 +1,27 @@
+<div class="dialog">
+    <h1 mat-dialog-title>
+        Join Room
+    </h1>
+    <div mat-dialog-content>
+        <div *ngFor="let room of this.rooms">
+            <div class="room">
+                Room {{" " + room.id}}
+                <button mat-icon-button color="accent" (click)="onJoinRoom(room)">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="!this.rooms.length">
+            Currently there are no rooms for this game!
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button
+            mat-raised-button
+            color="accent"
+            (click)="onCreateRoom()"
+        >
+            Create Room
+        </button>
+    </div>
+</div>

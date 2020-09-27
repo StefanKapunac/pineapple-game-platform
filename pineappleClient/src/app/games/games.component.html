@@ -1,11 +1,11 @@
 <div class="games">
-  <div class="game">
+  <div class="game" (click)="openJoinRoomDialog('tictactoe')">
     <img class="game__image" src="assets/tictactoe.png"/>
     <img class="game__image--over" src="assets/tictactoe.png"/>
     <div class="game__over"></div>
     <div class="game__title"> TIC TAC TOE </div>
   </div>
-  <div class="game">
+  <div class="game" (click)="openJoinRoomDialog('hangman')">
     <img class="game__image hangman" src="assets/hangman.png"/>
     <img class="game__image--over" src="assets/hangman.png"/>
     <div class="game__over"></div>

@@ -32,7 +32,7 @@
     </div>
   </ng-template>
 
-  <div *ngIf="roomService.gameInProgress; else joinDisplay">
+  <div *ngIf="roomService.gameInProgress">
     <app-chat class='sidebar__chat'>
     </app-chat>
 
@@ -45,28 +45,4 @@
         Close room
       </button>
   </div>
-
-  <ng-template #joinDisplay>
-    <div style="flex-grow: 1" *ngIf="authService.isUserSignedIn">
-    <app-join-room class='sidebar__chat'></app-join-room>
-    </div>
-
-    <!-- change logic after connect with backend for groups -->
-    <!--
-    <div style="flex-grow: 1" *ngIf="authService.isUserSignedIn">
-      <app-chat class='sidebar__chat'></app-chat>
-    </div> -->
-
-    <div>
-      <button
-        class="sameWithButtons"
-        mat-stroked-button
-        color="accent"
-        (click)="openCreateRoomDialog()"
-      >
-        Create Room
-      </button>
-    </div>
-  </ng-template>
-
 </div>

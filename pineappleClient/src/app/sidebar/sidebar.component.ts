@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SigninComponent } from '../signin/signin.component';
 import { SignupComponent } from '../signup/signup.component';
-import { JoinRoomComponent } from '../join-room/join-room.component';
 import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
 import { RoomService } from '../services/room.service';
@@ -13,13 +12,13 @@ import { Router } from '@angular/router';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
-  entryComponents: [SigninComponent, SignupComponent, JoinRoomComponent, CreateRoomComponent]
+  entryComponents: [SigninComponent, SignupComponent, CreateRoomComponent]
 })
 export class SidebarComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
-              public authService: AuthService,
               public roomService: RoomService,
+              public authService: AuthService,
               public router: Router) { }
 
   openSignInDialog(): void {
@@ -31,6 +30,8 @@ export class SidebarComponent implements OnInit {
           this.authService.isUserSignedIn = true;
           this.authService.username = res['userDetails'].username;
           localStorage.setItem('token', res['token']);
+          this.roomService.getRooms();
+          this.roomService.startConnection(this.authService.username);
         })
       }
     });
@@ -45,30 +46,11 @@ export class SidebarComponent implements OnInit {
           this.authService.isUserSignedIn = true;
           this.authService.username = res['userDetails'].username;
           localStorage.setItem('token', res['token']);
+          this.roomService.getRooms();
+          this.roomService.startConnection(this.authService.username);
         })
       }
     });
-  }
-
-  openCreateRoomDialog(): void {
-    if (this.authService.isUserSignedIn){
-
-      const dialogRef = this.dialog.open(CreateRoomComponent);
-
-      dialogRef.afterClosed().subscribe(gameName => {
-        if (gameName) {
-          this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
-          console.log(res);
-
-          //res['gameId'] === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
-        });
-        }
-      });
-
-    }
-    else {
-      this.dialog.open(NotSignedinComponent);
-    }
   }
 
   signOut() {

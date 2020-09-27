@@ -11,7 +11,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { CreateRoomComponent } from './create-room/create-room.component';
-import { JoinRoomComponent } from './join-room/join-room.component';
+import { JoinRoomDialog } from './join-room-dialog/join-room-dialog.component';
 import { ChatComponent } from './chat/chat.component';
 import { NotSignedinComponent } from './not-signedin/not-signedin.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
@@ -25,7 +25,7 @@ import { GamesComponent } from './games/games.component';
     SigninComponent,
     SignupComponent,
     CreateRoomComponent,
-    JoinRoomComponent,
+    JoinRoomDialog,
     ChatComponent,
     NotSignedinComponent,
     TicTacToeComponent,
