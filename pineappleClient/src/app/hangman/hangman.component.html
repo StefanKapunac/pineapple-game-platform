@@ -15,13 +15,22 @@
       </ng-container>
     </div>
 
-    <div>
-      <h2
-        class="game__result"
-        [ngClass]="{'hide': !gameOver}"
-      >
-        {{result}}
-      </h2>
+    <div class="game__status">
+      <div *ngIf="gameOver; else gameTurn">
+        <h2
+          class="game__result"
+        >
+          {{result}}
+        </h2>
+      </div>
+
+      <ng-template #gameTurn>
+        <h2
+          class="game__result"
+        >
+          {{turn}}
+        </h2>
+      </ng-template>
 
       <div class="word">
         <div *ngFor="let letter of guessedWord">
@@ -33,39 +42,32 @@
     </div>
   </div>
 
-    <input type="text" 
-    [ngClass]="{'hide': player != 'Choose' || wordIsPicked }"
-    [(ngModel)]="pickedWord">
+  <div *ngIf="player == 'Choose'; else guessPlayer">
+    <input type="text"
+      [ngClass]="{'hide': wordIsPicked }"
+      [(ngModel)]="pickedWord">
+
     <button
-    [ngClass]="{'hide': player != 'Choose' || wordIsPicked }"
-    mat-raised-button color="accent"
-    (click)="onChooseWord()"
+      [ngClass]="{'hide': wordIsPicked }"
+      mat-raised-button color="accent"
+      (click)="onChooseWord()"
     >
       Choose word
     </button>
-
-  <div>
-      <h2
-        class="game__result"
-        [ngClass]="{'hide': gameOver}"
-      >
-        {{turn}}
-      </h2>
-  </div>
-  <div>
-      <div
-        [ngClass]="{'hide': player != 'Choose' }"
-      >
-        <div *ngFor="let letter of guessedIncorrectLetters">
-          <h1 class="word__letter">
-            {{letter}}
-          </h1>
-        </div>
-      </div>
+    
   </div>
 
-
-  <div [ngClass]="{'hide': player == 'Choose'}">
+  <div *ngIf="player == 'Choose'" class="keyboard">
+    <div *ngFor="let letter of guessedIncorrectLetters" class="keyboard__row">
+      <button class="keyboard__key"
+         mat-raised-button
+         color="accent">
+        {{letter}}
+      </button>
+    </div>
+  </div>
+  
+  <ng-template #guessPlayer>
   <div class="keyboard">
     <div
       *ngFor="let row of keyboard; let i = index"
@@ -95,5 +97,6 @@
       </span>
     </div>
   </div>
-  </div>
+  </ng-template>
+
 </div>

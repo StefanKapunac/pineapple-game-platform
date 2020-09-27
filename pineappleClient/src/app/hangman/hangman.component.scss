@@ -20,6 +20,12 @@
     align-items: center;
   }
 
+  &__status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .hangman {
     height: 310px;
     width: 310px;
@@ -69,6 +75,7 @@
     }
   }
 }
+
 
 .hide {
   opacity: 0;
