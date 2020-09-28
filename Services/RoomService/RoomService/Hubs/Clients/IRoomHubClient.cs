@@ -13,5 +13,7 @@ namespace RoomService.Hubs.Clients
         Task RoomMade(Room room);
 
         Task RoomUpdated(Room room);
+
+        Task RoomClosed();
     }
 }

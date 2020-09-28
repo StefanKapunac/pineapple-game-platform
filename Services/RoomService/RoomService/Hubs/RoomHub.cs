@@ -9,5 +9,14 @@ namespace RoomService.Hubs
 {
     public class RoomHub : Hub<IRoomHubClient>
     {
+        public async Task JoinRoom(string roomName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+        }
+
+        public async Task LeaveRoom(string roomName)
+        {
+            await Clients.Group(roomName).RoomClosed();
+        }
     }
 }
