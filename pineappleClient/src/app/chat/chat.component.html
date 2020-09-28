@@ -2,7 +2,7 @@
   <div 
     class="message"
     [ngClass]="{'message--my': message.user === authService.username}"
-    *ngFor="let message of chat"
+    *ngFor="let message of chatService.chat"
   >
     <div *ngIf="message.user !== authService.username; else myMessage">
       <div class="message__username">

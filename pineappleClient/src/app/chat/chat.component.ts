@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import * as signalR from "@aspnet/signalr";
+import { RoomService } from '../services/room.service';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -8,50 +9,17 @@ import * as signalR from "@aspnet/signalr";
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  private hubConnection: signalR.HubConnection
-  public chat: Array<any> = [];
   public messageSendContent = '';
 
-  startConnection() {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5431/chathub')
-      .build();
-    
-    this.hubConnection
-      .start()
-      .then(async () => {
-        console.log('Connection started');
+  constructor(public authService: AuthService,
+              public roomService: RoomService,
+              public chatService: ChatService) {}
 
-        this.hubConnection.on('ReceiveMessage', (message) => {
-          if (this.authService.username !== message.user) {
-            this.chat.push(message);
-          }
-        });
-
-        await this.hubConnection.send('Join', this.authService.username, 'group1');
-      })
-      .catch(err => {
-        console.log('Error while starting connection: ' + err);
-      });
-  }
-
-  constructor(public authService: AuthService) {
-    this.startConnection();
+  async sendMessage() {
+    this.chatService.sendMessage(this.messageSendContent, this.authService.username, this.roomService.activeRoomId);
+    this.messageSendContent = '';
   }
 
   ngOnInit(): void {
   }
-
-  async sendMessage() {
-    const message = {
-      "user": this.authService.username,
-      "message": this.messageSendContent
-    };
-
-    await this.hubConnection.send('SendMessage', message, 'group1');
-
-    this.chat.push(message);
-    this.messageSendContent = '';
-  }
-
 }

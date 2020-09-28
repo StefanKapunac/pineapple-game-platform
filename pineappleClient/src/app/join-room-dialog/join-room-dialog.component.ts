@@ -4,6 +4,7 @@ import { RoomService } from '../services/room.service';
 import { Room } from '../services/room.model';
 import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-join-room-dialog',
@@ -17,7 +18,8 @@ export class JoinRoomDialog implements OnInit {
                 public authService: AuthService,
                 public dialogRef: MatDialogRef<JoinRoomDialog>,
                 @Inject(MAT_DIALOG_DATA) public data: any,
-                public dialog: MatDialog) {
+                public dialog: MatDialog,
+                public chatService: ChatService) {
         if (data.game === 'hangman') {
             this.rooms = this.roomService.hangmanRooms;
         } else {
@@ -32,7 +34,8 @@ export class JoinRoomDialog implements OnInit {
 
     onJoinRoom(room){
         this.roomService.joinRoom(room, this.authService.username).subscribe((res) => {
-            console.log(res);
+            this.roomService.activeRoomId = room.id;
+            this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
           });
         this.dialogRef.close();
     }
@@ -44,6 +47,8 @@ export class JoinRoomDialog implements OnInit {
             if (gameName) {
                 this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
                     console.log(res);
+                    this.roomService.activeRoomId = res['id'];
+                    this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
                     //res['gameId'] === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
                 });
             }

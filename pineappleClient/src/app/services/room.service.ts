@@ -16,6 +16,8 @@ export class RoomService {
   hangmanRooms: Room[] = [];
   tictactoeRooms: Room[] = []
   gameInProgress = false;
+  activeRoomId = '';
+
   private hubConnection: signalR.HubConnection;    
 
   constructor(private http: HttpClient,
