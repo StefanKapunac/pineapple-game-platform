@@ -36,7 +36,8 @@ export class JoinRoomDialog implements OnInit {
         this.roomService.joinRoom(room, this.authService.username).subscribe((res) => {
             this.roomService.activeRoomId = room.id;
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
-          });
+            this.roomService.waitingFullRoom = true;
+        });
         this.dialogRef.close();
     }
 
@@ -49,7 +50,7 @@ export class JoinRoomDialog implements OnInit {
                     console.log(res);
                     this.roomService.activeRoomId = res['id'];
                     this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
-                    //res['gameId'] === 1 ? this.router.navigate(['tic-tac-toe']) : this.router.navigate(['hangman']);
+                    this.roomService.waitingFullRoom = true;
                 });
             }
         });

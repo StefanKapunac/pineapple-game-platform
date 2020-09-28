@@ -1,4 +1,4 @@
-<div class="games">
+<div *ngIf="!roomService.waitingFullRoom; else spinner" class="games">
   <div class="game" (click)="openJoinRoomDialog('tictactoe')">
     <img class="game__image" src="assets/tictactoe.png"/>
     <img class="game__image--over" src="assets/tictactoe.png"/>
@@ -12,3 +12,9 @@
     <div class="game__title"> HANGMAN </div>
   </div>
 </div>
+<ng-template #spinner>
+  <div class="spinner">
+    <mat-spinner color="accent"></mat-spinner>
+    <h2 class="spinner__text">Waiting other paticipans to join</h2>
+  </div>
+</ng-template>

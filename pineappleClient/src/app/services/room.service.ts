@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Room } from './room.model';
-// import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
 import * as signalR from '@aspnet/signalr';
-import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -17,6 +15,7 @@ export class RoomService {
   tictactoeRooms: Room[] = []
   gameInProgress = false;
   activeRoomId = '';
+  waitingFullRoom = false;
 
   private hubConnection: signalR.HubConnection;    
 
@@ -46,6 +45,7 @@ export class RoomService {
           this.rooms = this.rooms.filter(room => room.id !== fullRoom.id);
           if (fullRoom.participants.findIndex(participant => participant.name === username) !== -1) {
             fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe', fullRoom.id]) : this.router.navigate(['hangman', fullRoom.id]);
+            this.waitingFullRoom = false;
           } 
         });
 

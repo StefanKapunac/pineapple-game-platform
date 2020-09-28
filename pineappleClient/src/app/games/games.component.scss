@@ -62,3 +62,16 @@
     }
   }
 }
+
+.spinner {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__text {
+    margin-top: 10px;
+    color: #424242;
+  }
+}
