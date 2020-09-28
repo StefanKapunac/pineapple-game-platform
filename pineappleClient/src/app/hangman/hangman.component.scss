@@ -76,7 +76,31 @@
   }
 }
 
+.picked-word {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #424242;
+  padding: 10px;
+  border-radius: 4px;
+
+  &__input {
+    margin-right: 10px;
+  }
+}
+
 
 .hide {
   opacity: 0;
+}
+
+.incorrect-letters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .incorrect-letter {
+    margin-right: 5px;
+    color: #424242;
+  }
 }

@@ -42,11 +42,15 @@
     </div>
   </div>
 
-  <div *ngIf="player == 'Choose'; else guessPlayer">
-    <input type="text"
-      [ngClass]="{'hide': wordIsPicked }"
-      [(ngModel)]="pickedWord">
-
+  <div *ngIf="player == 'Choose'; else guessPlayer" class="picked-word"  [ngClass]="{'hide': wordIsPicked}">
+    <mat-form-field color="accent" class="picked-word__input">
+      <mat-label>Picked word</mat-label>
+        <input
+          matInput
+          placeholder="Enter word"
+          [(ngModel)]="pickedWord"
+        />
+      </mat-form-field>
     <button
       [ngClass]="{'hide': wordIsPicked }"
       mat-raised-button color="accent"
@@ -54,16 +58,13 @@
     >
       Choose word
     </button>
-    
   </div>
 
-  <div *ngIf="player == 'Choose'" class="keyboard">
+  <div *ngIf="player == 'Choose'" class="incorrect-letters">
     <div *ngFor="let letter of guessedIncorrectLetters" class="keyboard__row">
-      <button class="keyboard__key"
-         mat-raised-button
-         color="accent">
+      <h2 class="incorrect-letter">
         {{letter}}
-      </button>
+      </h2>
     </div>
   </div>
   

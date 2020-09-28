@@ -92,10 +92,9 @@ export class RoomService {
 
   createRoom(gameName, username){
     let gameId = 1;
-    if(gameName === "hm"){
+    if(gameName === "hangman"){
       gameId = 2;
     }
-    console.log({gameName:gameName, participant: username});
     let room = {
       participant: {
         name: username
