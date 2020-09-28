@@ -26,6 +26,7 @@ export class TicTacToeComponent implements OnInit {
   public gameOver: boolean;
   public wonPlayer: string;
   public board = ['', '', '', '', '', '', '', '', ''];
+  public numberOfMoves = 0;
 
   private hubConnection: signalR.HubConnection;
 
@@ -41,6 +42,7 @@ export class TicTacToeComponent implements OnInit {
 
         this.hubConnection.on('MovePlayed', (move) => {
           if(move.role !== this.player) {
+            this.numberOfMoves++;
             this.board[move.field] = move.role;
             const combinations = this.WINNING_COMBINATIONS[move.field];
 
@@ -50,7 +52,11 @@ export class TicTacToeComponent implements OnInit {
                 this.wonPlayer = this.currentPlayer;
                 this.gameOver = true;
               }
-            });
+
+              if (this.numberOfMoves === 9) {
+                this.gameOver = true;
+              }
+            }); 
   
             this.currentPlayer = this.player;
           }
@@ -72,12 +78,17 @@ export class TicTacToeComponent implements OnInit {
   }
 
   get result() {
-    return this.wonPlayer === this.player
-      ? 'You won!'
-      : 'You lost!';
+    if (this.wonPlayer === this.player) {
+      return 'You won!';
+    } else if (this.wonPlayer == this.currentPlayer) {
+      return 'You lost!';
+    } else {
+      return 'It\'s a draw!';
+    }
   }
 
   async handleCellClick(clickedCell) {
+    this.numberOfMoves++;
     this.board[clickedCell] = this.currentPlayer;
     this.board = [...this.board];
 
@@ -99,6 +110,10 @@ export class TicTacToeComponent implements OnInit {
       }
     });
 
+    if (this.numberOfMoves === 9) {
+      this.gameOver = true;
+    }
+
     if (this.gameOver) {
       return;
     }
@@ -113,11 +128,6 @@ export class TicTacToeComponent implements OnInit {
 
   isCellPressed(cell) {
     return this.board[cell] !== '';
-  }
-
-  handlePlayAgain() {
-    this.board = ['', '', '', '', '', '', '', '', ''];
-    this.gameOver = false;
   }
 
   constructor(public authService: AuthService,
