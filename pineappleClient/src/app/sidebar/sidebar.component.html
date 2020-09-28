@@ -9,6 +9,7 @@
     >
       Sign In
     </button>
+  
     <button
       class="sameWithButtons"
       mat-stroked-button
@@ -24,11 +25,14 @@
         class="sameWithButtons sidebar__btn"
         mat-raised-button
         color="accent"
-        
         (click)="signOut()"
       >
         Sign Out
       </button>
+
+      <span *ngIf="authService.isUserSignedIn" class="username">
+        {{authService.username}}
+      </span>
     </div>
   </ng-template>
 
