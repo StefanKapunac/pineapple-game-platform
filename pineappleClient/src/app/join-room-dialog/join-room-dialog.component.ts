@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoomService } from '../services/room.service';
 import { Room } from '../services/room.model';
-import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
 import { ChatService } from '../services/chat.service';
 
@@ -33,7 +32,7 @@ export class JoinRoomDialog implements OnInit {
     }
 
     onJoinRoom(room){
-        this.roomService.joinRoom(room, this.authService.username).subscribe((res) => {
+        this.roomService.joinRoom(room, this.authService.username).subscribe(() => {
             this.roomService.activeRoomId = room.id;
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
@@ -42,19 +41,11 @@ export class JoinRoomDialog implements OnInit {
     }
 
     onCreateRoom(): void {    
-        const dialogRef = this.dialog.open(CreateRoomComponent);
-    
-        dialogRef.afterClosed().subscribe(gameName => {
-            if (gameName) {
-                this.roomService.createRoom(gameName, this.authService.username).subscribe((res) => {
-                    console.log(res);
-                    this.roomService.activeRoomId = res['id'];
-                    this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
-                    this.roomService.waitingFullRoom = true;
-                });
-            }
+        this.roomService.createRoom(this.data.game, this.authService.username).subscribe((res) => {
+            this.roomService.activeRoomId = res['id'];
+            this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
+            this.roomService.waitingFullRoom = true;
         });
-
         this.dialogRef.close();
     }
 }

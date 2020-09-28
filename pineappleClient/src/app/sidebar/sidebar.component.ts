@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SigninComponent } from '../signin/signin.component';
 import { SignupComponent } from '../signup/signup.component';
-import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
 import { RoomService } from '../services/room.service';
 import { Router } from '@angular/router';
@@ -11,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
-  entryComponents: [SigninComponent, SignupComponent, CreateRoomComponent]
+  entryComponents: [SigninComponent, SignupComponent]
 })
 export class SidebarComponent implements OnInit {
 

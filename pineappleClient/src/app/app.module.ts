@@ -10,7 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
-import { CreateRoomComponent } from './create-room/create-room.component';
 import { JoinRoomDialog } from './join-room-dialog/join-room-dialog.component';
 import { ChatComponent } from './chat/chat.component';
 import { NotSignedinComponent } from './not-signedin/not-signedin.component';
@@ -24,7 +23,6 @@ import { GamesComponent } from './games/games.component';
     SidebarComponent,
     SigninComponent,
     SignupComponent,
-    CreateRoomComponent,
     JoinRoomDialog,
     ChatComponent,
     NotSignedinComponent,
