@@ -27,9 +27,9 @@ export class RoomService {
     this.http.get<Room[]>(RoomService.url)
       .subscribe((rooms) => {
         this.rooms = rooms;
+        this.tictactoeRooms = this.getTicTacToeRooms();
+        this.hangmanRooms = this.getHangmanRooms();
       });
-    this.tictactoeRooms = this.getTicTacToeRooms();
-    this.hangmanRooms = this.getHangmanRooms();
   }
 
   startConnection(username) {

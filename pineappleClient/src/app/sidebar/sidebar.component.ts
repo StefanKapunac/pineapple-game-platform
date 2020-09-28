@@ -5,7 +5,6 @@ import { SignupComponent } from '../signup/signup.component';
 import { CreateRoomComponent } from '../create-room/create-room.component';
 import { AuthService } from '../services/auth.service';
 import { RoomService } from '../services/room.service';
-import { NotSignedinComponent } from '../not-signedin/not-signedin.component';
 import { Router } from '@angular/router';
 
 @Component({
