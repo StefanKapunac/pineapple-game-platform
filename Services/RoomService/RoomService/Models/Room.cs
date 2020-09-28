@@ -16,6 +16,8 @@ namespace RoomService.Models
 
         public HashSet<Participant> Participants { get; set; }
 
+        //public string[] RemainigRoles { get; set; }
+
         public class Game
         {
             public int Id { get; set; }

@@ -20,6 +20,7 @@ namespace RoomService.Controllers
 
         private readonly IHubContext<RoomHub, IRoomHubClient> _roomHub;
 
+
         private readonly Dictionary<string, string> _participantToGroup = new Dictionary<string, string>();
 
         private readonly RoomServiceContext _context;
@@ -84,6 +85,7 @@ namespace RoomService.Controllers
 
             _participantToGroup.Add(roomRequest.Participant.Name, id.ToString());
 
+
             // ako je puna soba - pokreni igricu
             int maxParticipants = Room.games.Where(g => g.Id == room.GameId).Select(g => g.NumPlayers).FirstOrDefault();
             if (room.Participants.Count() == maxParticipants)
@@ -137,7 +139,6 @@ namespace RoomService.Controllers
             Room room = new Room {
                 Participants = new HashSet<Participant> { p }
             };
-            // da li je gameId ispravan
             if (!Room.games.Any(g => g.Id == roomRequest.GameId))
             {
                 return BadRequest("There is no game with the requested id");

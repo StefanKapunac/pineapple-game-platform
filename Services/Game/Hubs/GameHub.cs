@@ -1,4 +1,4 @@
-﻿using Game.Hubs.Clients;
+using Game.Hubs.Clients;
 using Game.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.SignalR;
@@ -52,7 +52,7 @@ namespace Game.Hubs
                 }
                 await Clients.Caller.RoleAssigned(XOMove.Roles[numPlayersInGroup - 1]);
             }
-            else if(gameName == "Hangman")
+            else if (gameName == "Hangman")
             {
                 Console.WriteLine("hangman......");
                 if (numPlayersInGroup > HangmanMove.Roles.Length)
@@ -78,11 +78,11 @@ namespace Game.Hubs
         public async Task PlayXOMove(XOMove move, string groupName)
         {
             //sends the move from move.playerName to other players in the group
-	    await Clients.Group(groupName).MovePlayed(move);
-	}
+            await Clients.Group(groupName).MovePlayed(move);
+        }
 
 
-        public async Task PlayHangmanMove(HangmanMove move, string groupName) 
+        public async Task PlayHangmanMove(HangmanMove move, string groupName)
         {
             Console.WriteLine(move);
             await Clients.Group(groupName).MovePlayed(move);

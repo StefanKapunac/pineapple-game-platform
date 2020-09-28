@@ -57,12 +57,14 @@ export class TicTacToeComponent implements OnInit {
         });
 
         this.hubConnection.on('RoleAssigned', (role) => {
-          console.log(role);
+          console.log("User: ", this.authService.username,", role: ", role);
           this.player = role;
         })
 
         const roomId = this.route.snapshot.params.roomId;
-        await this.hubConnection.send('Join', this.authService.username, roomId, 'XO');
+        console.log("Join: ", this.authService.username);
+        var rand = (Math.random()*2);
+        setTimeout(async () => {await this.hubConnection.send('Join', this.authService.username, roomId, 'XO')}, rand);
       })
       .catch(err => {
         console.log('Error while starting connection with gamehub: ' + err);
