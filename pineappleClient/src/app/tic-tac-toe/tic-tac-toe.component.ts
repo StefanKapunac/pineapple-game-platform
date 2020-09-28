@@ -63,7 +63,7 @@ export class TicTacToeComponent implements OnInit {
 
         const roomId = this.route.snapshot.params.roomId;
         console.log("Join: ", this.authService.username);
-        var rand = (Math.random()*2);
+        var rand = (Math.random()*2.5);
         setTimeout(async () => {await this.hubConnection.send('Join', this.authService.username, roomId, 'XO')}, rand);
       })
       .catch(err => {

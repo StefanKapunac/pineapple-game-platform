@@ -31,8 +31,8 @@ export class JoinRoomDialog implements OnInit {
     ngOnInit(): void {
     }
 
-    onJoinRoom(room){
-        this.roomService.joinRoom(room, this.authService.username).subscribe(() => {
+    async onJoinRoom(room){
+        (await this.roomService.joinRoom(room, this.authService.username)).subscribe(() => {
             this.roomService.activeRoomId = room.id;
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
@@ -40,11 +40,12 @@ export class JoinRoomDialog implements OnInit {
         this.dialogRef.close();
     }
 
-    onCreateRoom(): void {    
-        this.roomService.createRoom(this.data.game, this.authService.username).subscribe((res) => {
+    async onCreateRoom(): Promise<void> {    
+        (await this.roomService.createRoom(this.data.game, this.authService.username)).subscribe((res) => {
             this.roomService.activeRoomId = res['id'];
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
+
         });
         this.dialogRef.close();
     }

@@ -64,7 +64,7 @@ export class HangmanComponent implements OnInit {
         });
 
         this.roomId = this.route.snapshot.params.roomId;
-        var rand = (Math.random()*2);
+        var rand = (Math.random()*2.5);
         setTimeout(async () => {await this.hubConnection.send('Join', this.authService.username, this.roomId, 'Hangman')}, rand);
       })
       .catch(err => {

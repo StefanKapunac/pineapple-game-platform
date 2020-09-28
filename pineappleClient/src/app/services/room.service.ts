@@ -68,6 +68,13 @@ export class RoomService {
           }
         });
 
+        this.hubConnection.on('RoomClosed', () => {
+          console.log("room closed");
+          // this.rooms[this.rooms.findIndex(r => r.id == Number(this.activeRoomId))].participants = [];
+          this.activeRoomId = '';
+          this.router.navigate(['/']);
+        });
+
       })
       .catch(err => {
         console.log('Error while starting room service connection: ' + err);
@@ -83,14 +90,17 @@ export class RoomService {
   }
   
 
-  joinRoom (room, username ){
+  async joinRoom (room, username ){
     let body = {participant: {name: username}, gameId: room.gameId, roomId: room.id};
     console.log('body to send', body);
     this.gameInProgress = true;
+
+    await this.hubConnection.send('JoinRoom', this.activeRoomId);
+
     return this.http.put(RoomService.url + '/' + room.id, body);
   }
 
-  createRoom(gameName, username){
+  async createRoom(gameName, username){
     let gameId = 1;
     if(gameName === "hangman"){
       gameId = 2;
@@ -103,10 +113,16 @@ export class RoomService {
     }
     console.log(room);
     this.gameInProgress = true;
+
+    await this.hubConnection.send('JoinRoom', this.activeRoomId.toString());
+
     return this.http.post(RoomService.url, room);
   }
 
-  closeRoom(){
+  async closeRoom(){
     this.gameInProgress = false;
+    console.log("closed room: ", this.activeRoomId);
+    console.log("Leaving...");
+    await this.hubConnection.send('LeaveRoom', this.activeRoomId.toString());
   }
 }
