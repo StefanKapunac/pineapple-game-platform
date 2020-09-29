@@ -42,9 +42,16 @@ export class RoomService {
         
         this.hubConnection.on('FullRoom', (fullRoom) => {
           console.log('full room');
-          this.rooms = this.rooms.filter(room => room.id !== fullRoom.id);
-		  this.tictactoeRooms = this.tictactoeRooms.filter(room => room.id !== fullRoom.id);
-		  this.hangmanRooms = this.hangmanRooms.filter(room => room.id !== fullRoom.id);
+
+          const indexOfRoom = this.rooms.findIndex(room => room.id === fullRoom.id);
+          indexOfRoom !== -1 && this.rooms.splice(indexOfRoom, 1);
+
+          const indexOfTicTacToeRoom = this.tictactoeRooms.findIndex(room => room.id === fullRoom.id);
+          indexOfTicTacToeRoom !== -1 && this.tictactoeRooms.splice(indexOfTicTacToeRoom, 1);
+          
+          const indexOfHangmanRoom = this.hangmanRooms.findIndex(room => room.id === fullRoom.id);
+          indexOfHangmanRoom !== -1 && this.hangmanRooms.splice(indexOfHangmanRoom, 1);
+          
           if (fullRoom.participants.findIndex(participant => participant.name === username) !== -1) {
             fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe', fullRoom.id]) : this.router.navigate(['hangman', fullRoom.id]);
             this.waitingFullRoom = false;
