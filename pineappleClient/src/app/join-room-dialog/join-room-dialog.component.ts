@@ -41,8 +41,10 @@ export class JoinRoomDialog implements OnInit {
     }
 
     async onCreateRoom(): Promise<void> {    
-        (await this.roomService.createRoom(this.data.game, this.authService.username)).subscribe((res) => {
+        (await this.roomService.createRoom(this.data.game, this.authService.username)).subscribe(async (res) => {
             this.roomService.activeRoomId = res['id'];
+			console.log(res['id']);
+			await this.roomService.hubConnection.send('JoinRoom', this.roomService.activeRoomId.toString());
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
 

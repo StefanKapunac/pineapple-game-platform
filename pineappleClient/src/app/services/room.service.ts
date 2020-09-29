@@ -17,7 +17,7 @@ export class RoomService {
   activeRoomId = '';
   waitingFullRoom = false;
 
-  private hubConnection: signalR.HubConnection;    
+  hubConnection: signalR.HubConnection;    
 
   constructor(private http: HttpClient,
               private router: Router) {}
@@ -43,6 +43,8 @@ export class RoomService {
         this.hubConnection.on('FullRoom', (fullRoom) => {
           console.log('full room');
           this.rooms = this.rooms.filter(room => room.id !== fullRoom.id);
+		  this.tictactoeRooms = this.tictactoeRooms.filter(room => room.id !== fullRoom.id);
+		  this.hangmanRooms = this.hangmanRooms.filter(room => room.id !== fullRoom.id);
           if (fullRoom.participants.findIndex(participant => participant.name === username) !== -1) {
             fullRoom.gameId === 1 ? this.router.navigate(['tic-tac-toe', fullRoom.id]) : this.router.navigate(['hangman', fullRoom.id]);
             this.waitingFullRoom = false;
@@ -70,9 +72,12 @@ export class RoomService {
 
         this.hubConnection.on('RoomClosed', () => {
           console.log("room closed");
-          // this.rooms[this.rooms.findIndex(r => r.id == Number(this.activeRoomId))].participants = [];
+          //this.rooms[this.rooms.findIndex(r => r.id == Number(this.activeRoomId))].participants = [];
           this.activeRoomId = '';
+		  this.gameInProgress = false;
+		  this.waitingFullRoom = false;
           this.router.navigate(['/']);
+		  console.log("should be on start page...");
         });
 
       })
@@ -95,7 +100,7 @@ export class RoomService {
     console.log('body to send', body);
     this.gameInProgress = true;
 
-    await this.hubConnection.send('JoinRoom', this.activeRoomId);
+    await this.hubConnection.send('JoinRoom', room.id.toString());
 
     return this.http.put(RoomService.url + '/' + room.id, body);
   }
@@ -114,9 +119,16 @@ export class RoomService {
     console.log(room);
     this.gameInProgress = true;
 
-    await this.hubConnection.send('JoinRoom', this.activeRoomId.toString());
-
-    return this.http.post(RoomService.url, room);
+    //await this.hubConnection.send('JoinRoom', this.activeRoomId.toString());
+	//console.log(this.activeRoomId.toString());
+	
+    let result = this.http.post(RoomService.url, room);
+	console.log(result);
+	console.log(this.activeRoomId);
+	
+	//await this.hubConnection.send('JoinRoom', result.id.toString());
+	//console.log('id sobe: ' + result.id.toString());
+	return result;
   }
 
   async closeRoom(){
