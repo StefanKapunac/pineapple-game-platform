@@ -35,6 +35,7 @@ export class JoinRoomDialog implements OnInit {
         (await this.roomService.joinRoom(room, this.authService.username)).subscribe(() => {
             this.roomService.activeRoomId = room.id;
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
+			console.log('onJoinRoom: ' + this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
         });
         this.dialogRef.close();
@@ -46,6 +47,7 @@ export class JoinRoomDialog implements OnInit {
 			console.log(res['id']);
 			await this.roomService.hubConnection.send('JoinRoom', this.roomService.activeRoomId.toString());
             this.chatService.startConnection(this.authService.username, this.roomService.activeRoomId);
+			console.log('onCreateRoom: ' + this.roomService.activeRoomId);
             this.roomService.waitingFullRoom = true;
 
         });

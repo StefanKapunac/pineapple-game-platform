@@ -16,8 +16,10 @@ export class ChatComponent implements OnInit {
               public chatService: ChatService) {}
 
   async sendMessage() {
-    this.chatService.sendMessage(this.messageSendContent, this.authService.username, this.roomService.activeRoomId);
-    this.messageSendContent = '';
+	if (this.messageSendContent.trim()) {
+		this.chatService.sendMessage(this.messageSendContent, this.authService.username, this.roomService.activeRoomId);
+		this.messageSendContent = '';
+	}
   }
 
   ngOnInit(): void {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,18 +10,18 @@ namespace RoomService.Hubs
 {
     public class RoomHub : Hub<IRoomHubClient>
     {
-        // maps roomName to connection id
-        private static readonly Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
+        // maps connection id to room name
+        private static readonly ConcurrentDictionary<string, string> _ConnectionsMap = new ConcurrentDictionary<string, string>();
 
         public async Task JoinRoom(string roomName)
         {
-            _ConnectionsMap.Add(roomName, Context.ConnectionId);
+            _ConnectionsMap.TryAdd(Context.ConnectionId, roomName);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         }
 
         public async Task LeaveRoom(string roomName)
         {
-            Console.WriteLine(_ConnectionsMap[roomName]);
+            Console.WriteLine(_ConnectionsMap.Where(t => t.Value == roomName));
             await Clients.Group(roomName).RoomClosed();
         }
     }

@@ -72,13 +72,18 @@ export class RoomService {
 
         this.hubConnection.on('RoomClosed', () => {
           console.log("room closed");
-          //this.rooms[this.rooms.findIndex(r => r.id == Number(this.activeRoomId))].participants = [];
+		  console.log('aaa');
+		  console.log(RoomService.url + '/' + parseInt(this.activeRoomId));
+		  let x = this.http.delete(RoomService.url + '/' + parseInt(this.activeRoomId)).subscribe(() => this.getRooms());
+		  console.log(x);
+          // this.rooms[this.rooms.findIndex(r => r.id == Number(this.activeRoomId))].participants = [];
           this.activeRoomId = '';
 		  this.gameInProgress = false;
 		  this.waitingFullRoom = false;
           this.router.navigate(['/']);
 		  console.log("should be on start page...");
         });
+		
 
       })
       .catch(err => {
@@ -119,8 +124,8 @@ export class RoomService {
     console.log(room);
     this.gameInProgress = true;
 
-    //await this.hubConnection.send('JoinRoom', this.activeRoomId.toString());
-	//console.log(this.activeRoomId.toString());
+    await this.hubConnection.send('JoinRoom', this.activeRoomId.toString());
+	console.log(this.activeRoomId.toString());
 	
     let result = this.http.post(RoomService.url, room);
 	console.log(result);

@@ -3,6 +3,7 @@ using Game.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,10 +14,10 @@ namespace Game.Hubs
     public class GameHub : Hub<IGameClient>
     {
         // maps playerName to connection id
-        private static readonly Dictionary<string, string> _ConnectionsMap = new Dictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, string> _ConnectionsMap = new ConcurrentDictionary<string, string>();
 
         // maps connection id to group
-        private static readonly Dictionary<string, string> _ConnectionToGroup = new Dictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, string> _ConnectionToGroup = new ConcurrentDictionary<string, string>();
 
         // maps groupName to gameName
         //private readonly static Dictionary<string, string> _GamesMap = new Dictionary<string, string>();
@@ -27,10 +28,12 @@ namespace Game.Hubs
             Console.WriteLine("Join " + playerName);
 
             //add playername and connection to map
-            _ConnectionsMap.Add(playerName, Context.ConnectionId);
+            _ConnectionsMap.TryAdd(playerName, Context.ConnectionId);
+            //_ConnectionsMap.Add(playerName, Context.ConnectionId);
 
             //add connection and group to map
-            _ConnectionToGroup.Add(Context.ConnectionId, groupName);
+            _ConnectionToGroup.TryAdd(Context.ConnectionId, groupName);
+            //_ConnectionToGroup.Add(Context.ConnectionId, groupName);
 
 
 
@@ -42,7 +45,7 @@ namespace Game.Hubs
 
             //send player assigned role
             int numPlayersInGroup = _ConnectionToGroup.Where(t => t.Value == groupName).Count();
-
+            Console.WriteLine("numPlayers: " + numPlayersInGroup + " in group: " + groupName);
             if (gameName == "XO")
             {
                 if (numPlayersInGroup > XOMove.Roles.Length)
@@ -94,7 +97,8 @@ namespace Game.Hubs
             var a = _ConnectionsMap.Where(p => p.Value == Context.ConnectionId).Select(p => p.Key).ToList();
             foreach (var s in a)
             {
-                _ConnectionsMap.Remove(s);
+                string value;
+                _ConnectionsMap.TryRemove(s, out value);
             }
             return base.OnDisconnectedAsync(exception);
         }

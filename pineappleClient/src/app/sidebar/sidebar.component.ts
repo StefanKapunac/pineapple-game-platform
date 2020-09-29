@@ -55,10 +55,14 @@ export class SidebarComponent implements OnInit {
     localStorage.removeItem('token');
     this.authService.username = '';
     this.authService.isUserSignedIn = false;
+	this.closeRoom();
   }
 
   closeRoom() {
+	console.log('before: ' + this.roomService.rooms);
     this.roomService.closeRoom();
+	//this.roomService.getRooms();
+	console.log('after: ' + this.roomService.rooms);
   }
 
   ngOnInit(): void {

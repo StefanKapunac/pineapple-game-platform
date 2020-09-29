@@ -160,18 +160,16 @@ namespace RoomService.Controllers
 
         // DELETE: api/RoomRequests/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Room>> DeleteRoom(int id)
+        public async Task DeleteRoom(int id)
         {
             var room = await _context.Rooms.FindAsync(id);
             if (room == null)
             {
-                return NotFound();
+                return;
             }
 
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
-
-            return room;
         }
 
         private bool RoomExists(int id)

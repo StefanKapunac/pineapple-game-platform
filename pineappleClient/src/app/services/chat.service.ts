@@ -9,6 +9,8 @@ export class ChatService {
     public chat: Array<any> = [];
   
     startConnection(username, roomId) {
+	  this.chat = [];
+		
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl('https://localhost:5431/chathub')
         .build();
@@ -23,6 +25,7 @@ export class ChatService {
               this.chat.push(message);
             }
           });
+		  
 
           await this.hubConnection.send('Join', username, roomId.toString());
         })

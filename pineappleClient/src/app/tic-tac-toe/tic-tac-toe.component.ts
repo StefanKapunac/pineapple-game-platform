@@ -80,7 +80,7 @@ export class TicTacToeComponent implements OnInit {
   get result() {
     if (this.wonPlayer === this.player) {
       return 'You won!';
-    } else if (this.wonPlayer == this.currentPlayer) {
+    } else if (this.wonPlayer) {
       return 'You lost!';
     } else {
       return 'It\'s a draw!';
